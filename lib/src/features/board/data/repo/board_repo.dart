@@ -56,4 +56,24 @@ class BoardRepo {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }
   }
+
+  Future<NetworkResult<List<LookupModel>>> getCardTypes() async {
+    try {
+      final response = await _service.getCardTypes();
+      final List data = response.data['data'];
+      return NetworkResult.success(data.map((e) => LookupModel.fromJson(e)).toList());
+    } catch (error) {
+      return NetworkResult.failure(NetworkExceptions.getDioException(error));
+    }
+  }
+
+  Future<NetworkResult<List<LookupModel>>> getCardPriorities() async {
+    try {
+      final response = await _service.getCardPriorities();
+      final List data = response.data['data'];
+      return NetworkResult.success(data.map((e) => LookupModel.fromJson(e)).toList());
+    } catch (error) {
+      return NetworkResult.failure(NetworkExceptions.getDioException(error));
+    }
+  }
 }

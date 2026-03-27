@@ -6,9 +6,11 @@ import 'package:isd_tms/src/features/auth/data/repo/auth_repo.dart';
 import 'package:isd_tms/src/features/auth/presentation/bloc/login_cubit.dart';
 import 'package:isd_tms/src/features/auth/presentation/views/screens/login_screen.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/board/data/models/members_screen_args.dart';
 import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/board_screen.dart';
+import 'package:isd_tms/src/features/board/presentation/views/screens/members/members_screen.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/task_detail_screen.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
 import 'package:isd_tms/src/features/projects/data/repo/projects_repo.dart';
@@ -23,10 +25,11 @@ class AppRouter {
       GlobalKey<NavigatorState>();
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+    final arguments=settings.arguments;
     switch (settings.name) {
       case Routes.initial:
         return _buildRoute(const SplashScreen(), settings);
-
+//--------------------------------------------------------------------
       case Routes.login:
         return _buildRoute(
           BlocProvider(
@@ -35,6 +38,7 @@ class AppRouter {
           ),
           settings,
         );
+//--------------------------------------------------------------------
 
       case Routes.projects:
         return _buildRoute(
@@ -44,9 +48,10 @@ class AppRouter {
           ),
           settings,
         );
+//--------------------------------------------------------------------
 
       case Routes.board:
-        final project = settings.arguments as ProjectModel;
+        final project = arguments as ProjectModel;
         return _buildRoute(
           BlocProvider(
             create: (_) => BoardCubit(getIt<BoardRepo>())..getBoard(project.id),
@@ -54,13 +59,22 @@ class AppRouter {
           ),
           settings,
         );
+//--------------------------------------------------------------------
 
       case Routes.taskDetail:
-        final card = settings.arguments as CardModel;
+        final card = arguments as CardModel;
         return _buildRoute(
           TaskDetailScreen(card: card),
           settings,
         );
+//--------------------------------------------------------------------
+      case Routes.members:
+        final  args= arguments as MembersScreenArgs;
+        return _buildRoute(
+          MembersScreen(args:args),
+          settings,
+        );
+//--------------------------------------------------------------------
 
       default:
         return null;

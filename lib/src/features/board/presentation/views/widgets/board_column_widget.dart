@@ -5,7 +5,7 @@ import 'package:isd_tms/src/core/theme/app_colors.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/task_card_widget.dart';
-import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task_dialog.dart';
+import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task/add_task_dialog.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 
 class BoardColumnWidget extends StatelessWidget {
@@ -37,7 +37,7 @@ class BoardColumnWidget extends StatelessWidget {
     final cardsForList = cubit.getCardsForList(boardList.id);
 
     return Container(
-      width: 280.w,
+      width: double.infinity,
       decoration: BoxDecoration(
         color: context.appColors.scaffoldBackground,
         borderRadius: BorderRadius.circular(8.r),

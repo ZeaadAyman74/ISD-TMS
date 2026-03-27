@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 extension StringExtension on String? {
   String capitalize() {
-    return "${this![0].toUpperCase()}${this!.substring(1).toLowerCase()}";
+    return "${this![0].toUpperCase()}${this!.substring(1)}";
   }
 
   bool get isNullOrEmpty => !(this != null && this!.isNotEmpty);

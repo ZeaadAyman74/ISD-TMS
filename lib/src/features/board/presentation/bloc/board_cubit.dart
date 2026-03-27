@@ -15,19 +15,51 @@ class BoardCubit extends Cubit<BoardState> {
   List<CardModel> cards = [];
   List<LabelModel> labels = [];
   List<BoardMember> members = [];
+  List<LookupModel> cardTypes = [];
+  List<LookupModel> cardPriorities = [];
   int? currentProjectId;
+  String? currentProjectName;
 
-  Future<void> getBoard(int projectId) async {
+  String searchQuery = '';
+  List<int> selectedAssigneeIds = [];
+  List<String> selectedPriorities = [];
+  List<String> selectedTypeKeys = [];
+
+  Future<void> getBoard(int projectId, {String? projectName}) async {
     currentProjectId = projectId;
+    currentProjectName ??= projectName;
     emit(const BoardLoading());
-    final result = await _repo.getProjectBoard(projectId);
 
-    result.when(
+    final results = await Future.wait([
+      _repo.getProjectBoard(projectId),
+      _repo.getCardTypes(),
+      _repo.getCardPriorities(),
+    ]);
+
+    final boardResult = results[0] as NetworkResult<BoardResponse>;
+    final typesResult = results[1] as NetworkResult<List<LookupModel>>?;
+    final prioritiesResult = results[2] as NetworkResult<List<LookupModel>>?;
+
+    boardResult.when(
       success: (board) {
         lists = board.lists..sort((a, b) => a.position.compareTo(b.position));
         cards = board.cards;
         labels = board.labels;
         members = board.members;
+
+        if (typesResult != null) {
+          typesResult.when(
+            success: (types) => cardTypes = types,
+            failure: (_) {},
+          );
+        }
+        if (prioritiesResult != null) {
+          prioritiesResult.when(
+            success: (priorities) => cardPriorities = priorities,
+            failure: (_) {},
+          );
+        }
+
         emit(BoardLoaded(lists: lists, cards: cards));
       },
       failure: (error) {
@@ -37,8 +69,65 @@ class BoardCubit extends Cubit<BoardState> {
   }
 
   List<CardModel> getCardsForList(int listId) {
-    return cards.where((c) => c.listId == listId).toList()
-      ..sort((a, b) => a.position.compareTo(b.position));
+    var listCards = cards.where((c) => c.listId == listId).toList();
+
+    // Search filtration
+    if (searchQuery.isNotEmpty) {
+      listCards = listCards
+          .where((c) =>
+              c.title.toLowerCase().contains(searchQuery.toLowerCase()) ||
+              (c.description != null &&
+                  c.description!
+                      .toLowerCase()
+                      .contains(searchQuery.toLowerCase())))
+          .toList();
+    }
+
+    // Assignees filtration
+    if (selectedAssigneeIds.isNotEmpty) {
+      listCards = listCards.where((c) {
+        return c.assignees
+            .any((a) => selectedAssigneeIds.contains(a.id));
+      }).toList();
+    }
+
+    // Priority filtration
+    if (selectedPriorities.isNotEmpty) {
+      listCards = listCards
+          .where((c) => selectedPriorities.contains(c.priority))
+          .toList();
+    }
+
+    // Type filtration
+    if (selectedTypeKeys.isNotEmpty) {
+      listCards = listCards
+          .where((c) => selectedTypeKeys.contains(c.type))
+          .toList();
+    }
+
+    return listCards..sort((a, b) => a.position.compareTo(b.position));
+  }
+
+  void updateFilters({
+    String? search,
+    List<int>? assigneeIds,
+    List<String>? priorities,
+    List<String>? typeKeys,
+  }) {
+    if (search != null) searchQuery = search;
+    if (assigneeIds != null) selectedAssigneeIds = assigneeIds;
+    if (priorities != null) selectedPriorities = priorities;
+    if (typeKeys != null) selectedTypeKeys = typeKeys;
+
+    emit(BoardLoaded(lists: lists, cards: cards));
+  }
+
+  void clearFilters() {
+    searchQuery = '';
+    selectedAssigneeIds = [];
+    selectedPriorities = [];
+    selectedTypeKeys = [];
+    emit(BoardLoaded(lists: lists, cards: cards));
   }
 
   Future<void> addCard({
