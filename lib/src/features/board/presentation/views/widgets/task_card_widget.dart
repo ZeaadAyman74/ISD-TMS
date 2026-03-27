@@ -1,31 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isd_tms/src/core/router/router.main.dart';
 import 'package:isd_tms/src/core/theme/app_colors.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/board/data/models/task_detail_args.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
+import 'package:isd_tms/src/core/extensions/ui_extension.dart';
 
 class TaskCardWidget extends StatelessWidget {
-  const TaskCardWidget({super.key, required this.card});
+  const TaskCardWidget({super.key, required this.card, required this.projectId});
 
   final CardModel card;
+  final int projectId;
 
   Color get _typeColor {
     switch (card.type?.toLowerCase()) {
+      case 'task':
+        return AppColors.taskColor;
       case 'bug':
         return AppColors.bugColor;
       case 'story':
         return AppColors.storyColor;
       case 'improvement':
         return AppColors.improvementColor;
-      case 'task':
       default:
-        return AppColors.taskColor;
+        return AppColors.primary;
     }
   }
 
-  Color get _priorityColor {
-    switch (card.priority?.toLowerCase()) {
+  IconData get _typeIcon {
+    switch (card.type?.toLowerCase()) {
+      case 'task':
+        return Icons.check_box_outlined;
+      case 'bug':
+        return Icons.bug_report_outlined;
+      case 'story':
+        return Icons.book_outlined;
+      case 'improvement':
+        return Icons.trending_up;
+      default:
+        return Icons.task_alt;
+    }
+  }
+
+  Color _getPriorityColor(String? priority) {
+    switch (priority?.toLowerCase()) {
       case 'high':
         return AppColors.highPriority;
       case 'medium':
@@ -33,7 +54,20 @@ class TaskCardWidget extends StatelessWidget {
       case 'low':
         return AppColors.lowPriority;
       default:
-        return AppColors.textHint;
+        return AppColors.textSecondary;
+    }
+  }
+
+  IconData _getPriorityIcon(String? priority) {
+    switch (priority?.toLowerCase()) {
+      case 'high':
+        return Icons.keyboard_double_arrow_up;
+      case 'medium':
+        return Icons.trending_flat;
+      case 'low':
+        return Icons.keyboard_double_arrow_down;
+      default:
+        return Icons.flag;
     }
   }
 
@@ -44,7 +78,11 @@ class TaskCardWidget extends StatelessWidget {
         Navigator.pushNamed(
           context,
           Routes.taskDetail,
-          arguments: card,
+          arguments: TaskDetailArgs(
+            card: card,
+            projectId: projectId,
+            boardCubit: context.read<BoardCubit>(),
+          ),
         );
       },
       child: Container(
@@ -54,7 +92,7 @@ class TaskCardWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -63,67 +101,49 @@ class TaskCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Labels row
-            if (card.labels.isNotEmpty) ...[
-              Wrap(
-                spacing: 4.w,
-                runSpacing: 4.h,
-                children: card.labels.map((label) {
-                  return Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                    decoration: BoxDecoration(
-                      color: _parseColor(label.color).withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-                    child: Text(
-                      label.name,
-                      style: context.appTextTheme.font10LabelRegular.copyWith(
-                        color: _parseColor(label.color),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-              SizedBox(height: 6.h),
-            ],
             // Title
             Text(
               card.title,
-              style: context.appTextTheme.font13TextPrimarySemiBold,
+              style: context.appTextTheme.font14TextPrimarySemiBold,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 8.h),
-            // Bottom row: type, priority, assignees
+            SizedBox(height: 12.h),
+            // Chips Row
             Row(
               children: [
-                // Type chip
-                if (card.type != null) ...[
-                  _TypeChip(type: card.type!, color: _typeColor),
-                  SizedBox(width: 6.w),
+                _TypeChip(
+                  type: card.type ?? 'task',
+                  color: _typeColor,
+                  icon: _typeIcon,
+                ),
+                SizedBox(width: 8.w),
+                _PriorityChip(
+                  priority: card.priority ?? 'medium',
+                  color: _getPriorityColor(card.priority),
+                  icon: _getPriorityIcon(card.priority),
+                ),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            // Footer: Metadata & Assignees
+            Row(
+              children: [
+                if (card.dueDate != null) ...[
+                  Icon(Icons.access_time, size: 14.r, color: AppColors.textSecondary),
+                  SizedBox(width: 4.w),
                 ],
-                // Priority icon
-                if (card.priority != null) ...[
-                  _PriorityIndicator(
-                    priority: card.priority!,
-                    color: _priorityColor,
+                if (card.commentsCount > 0) ...[
+                  Icon(Icons.chat_bubble_outline, size: 14.r, color: AppColors.textSecondary),
+                  SizedBox(width: 4.w),
+                  Text(
+                    '${card.commentsCount}',
+                    style: context.appTextTheme.font11TextSecondaryRegular,
                   ),
                 ],
                 const Spacer(),
-                // Comments count
-                if (card.commentsCount > 0) ...[
-                  Icon(Icons.chat_bubble_outline,
-                      size: 12.r, color: context.appColors.textHint),
-                  SizedBox(width: 2.w),
-                  Text(
-                    card.commentsCount.toString(),
-                    style: context.appTextTheme.font11TextSecondaryRegular,
-                  ),
-                  SizedBox(width: 6.w),
-                ],
-                // Assignees
-                if (card.assignees.isNotEmpty) _AssigneeAvatars(card.assignees),
+                if (card.assignees.isNotEmpty)
+                  _AssigneeAvatars(assignees: card.assignees),
               ],
             ),
           ],
@@ -131,112 +151,130 @@ class TaskCardWidget extends StatelessWidget {
       ),
     );
   }
-
-  Color _parseColor(String hex) {
-    try {
-      return Color(int.parse(hex.replaceFirst('#', '0xFF')));
-    } catch (_) {
-      return AppColors.textHint;
-    }
-  }
 }
 
 class _TypeChip extends StatelessWidget {
-  const _TypeChip({required this.type, required this.color});
+  const _TypeChip({required this.type, required this.color, required this.icon});
 
   final String type;
   final Color color;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4.r),
       ),
-      child: Text(
-        type,
-        style: context.appTextTheme.font10LabelRegular.copyWith(
-          color: color,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12.r, color: color),
+          SizedBox(width: 4.w),
+          Text(
+            type.capitalize(),
+            style: context.appTextTheme.font11TextSecondaryRegular.copyWith(
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _PriorityIndicator extends StatelessWidget {
-  const _PriorityIndicator({required this.priority, required this.color});
+class _PriorityChip extends StatelessWidget {
+  const _PriorityChip({required this.priority, required this.color, required this.icon});
 
   final String priority;
   final Color color;
-
-  IconData get _icon {
-    switch (priority.toLowerCase()) {
-      case 'high':
-        return Icons.keyboard_double_arrow_up;
-      case 'medium':
-        return Icons.drag_handle;
-      case 'low':
-        return Icons.keyboard_double_arrow_down;
-      default:
-        return Icons.remove;
-    }
-  }
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(_icon, size: 14.r, color: color),
-        SizedBox(width: 2.w),
-        Text(
-          priority,
-          style: context.appTextTheme.font10LabelRegular.copyWith(
-            color: color,
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12.r, color: color),
+          SizedBox(width: 4.w),
+          Text(
+            priority.capitalize(),
+            style: context.appTextTheme.font11TextSecondaryRegular.copyWith(
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
 class _AssigneeAvatars extends StatelessWidget {
-  const _AssigneeAvatars(this.assignees);
+  const _AssigneeAvatars({required this.assignees});
 
   final List<CardAssignee> assignees;
 
   @override
   Widget build(BuildContext context) {
-    final display = assignees.take(3).toList();
-    final remaining = assignees.length - 3;
+    final displayAssignees = assignees.take(3).toList();
+    final remainingCount = assignees.length - displayAssignees.length;
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ...display.asMap().entries.map((entry) {
+        ...displayAssignees.asMap().entries.map((entry) {
+          final index = entry.key;
+          final assignee = entry.value;
           return Transform.translate(
-            offset: Offset(-entry.key * 6.0, 0),
-            child: CircleAvatar(
-              radius: 10.r,
-              backgroundColor: context.appColors.primary,
-              child: Text(
-                entry.value.initials,
-                style: context.appTextTheme.font7WhiteSemiBold,
+            offset: Offset(index * -8.0, 0),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child: CircleAvatar(
+                radius: 12.r,
+                backgroundColor: context.appColors.secondaryBackground,
+                child: Text(
+                  assignee.initials,
+                  style: context.appTextTheme.font10LabelRegular.copyWith(
+                    fontSize: 8.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           );
         }),
-        if (remaining > 0)
+        if (remainingCount > 0)
           Transform.translate(
-            offset: Offset(-display.length * 6.0, 0),
-            child: CircleAvatar(
-              radius: 10.r,
-              backgroundColor: context.appColors.secondaryBackground,
-              child: Text(
-                '+$remaining',
-                style: context.appTextTheme.font7TextSecondaryBold,
+            offset: Offset(displayAssignees.length * -8.0, 0),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child: CircleAvatar(
+                radius: 12.r,
+                backgroundColor: AppColors.primary,
+                child: Text(
+                  '+$remainingCount',
+                  style: context.appTextTheme.font10LabelRegular.copyWith(
+                    color: Colors.white,
+                    fontSize: 8.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),

@@ -191,6 +191,15 @@ class BoardMember {
   final String? email;
   final String? role;
 
+  String get initials {
+    if (name.isEmpty) return '?';
+    final parts = name.split(' ');
+    if (parts.length > 1) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return parts[0][0].toUpperCase();
+  }
+
   factory BoardMember.fromJson(Map<String, dynamic> json) {
     return BoardMember(
       id: json['id'] ?? 0,
@@ -227,6 +236,145 @@ class LookupModel {
       color: json['color'] ?? '#000000',
       icon: json['icon'] ?? '',
       order: json['order'],
+    );
+  }
+}
+
+class CardAttachment {
+  const CardAttachment({
+    required this.id,
+    required this.cardId,
+    required this.fileName,
+    required this.filePath,
+    required this.mimeType,
+    required this.size,
+    required this.createdAt,
+    required this.previewUrl,
+    required this.downloadUrl,
+    this.user,
+  });
+
+  final int id;
+  final int cardId;
+  final String fileName;
+  final String filePath;
+  final String mimeType;
+  final int size;
+  final String createdAt;
+  final String previewUrl;
+  final String downloadUrl;
+  final BoardMember? user;
+
+  factory CardAttachment.fromJson(Map<String, dynamic> json) {
+    return CardAttachment(
+      id: json['id'] ?? 0,
+      cardId: json['card_id'] ?? 0,
+      fileName: json['file_name'] ?? '',
+      filePath: json['file_path'] ?? '',
+      mimeType: json['mime_type'] ?? '',
+      size: json['size'] ?? 0,
+      createdAt: json['created_at'] ?? '',
+      previewUrl: json['preview_url'] ?? '',
+      downloadUrl: json['download_url'] ?? '',
+      user: json['user'] != null ? BoardMember.fromJson(json['user']) : null,
+    );
+  }
+}
+
+class CardComment {
+  const CardComment({
+    required this.id,
+    required this.cardId,
+    required this.content,
+    required this.createdAt,
+    this.user,
+  });
+
+  final int id;
+  final int cardId;
+  final String content;
+  final String createdAt;
+  final BoardMember? user;
+
+  factory CardComment.fromJson(Map<String, dynamic> json) {
+    return CardComment(
+      id: json['id'] ?? 0,
+      cardId: json['card_id'] ?? 0,
+      content: json['content'] ?? '',
+      createdAt: json['created_at'] ?? '',
+      user: json['user'] != null ? BoardMember.fromJson(json['user']) : null,
+    );
+  }
+}
+
+class CardActivity {
+  const CardActivity({
+    required this.id,
+    required this.action,
+    required this.date,
+    this.actor,
+    this.changes = const [],
+  });
+
+  final int id;
+  final String action;
+  final String date;
+  final ActivityActor? actor;
+  final List<ActivityChange> changes;
+
+  factory CardActivity.fromJson(Map<String, dynamic> json) {
+    return CardActivity(
+      id: json['id'] ?? 0,
+      action: json['action'] ?? '',
+      date: json['date'] ?? '',
+      actor: json['actor'] != null ? ActivityActor.fromJson(json['actor']) : null,
+      changes: (json['changes'] as List?)
+              ?.map((e) => ActivityChange.fromJson(e))
+              .toList() ??
+          [],
+    );
+  }
+}
+
+class ActivityActor {
+  const ActivityActor({
+    required this.id,
+    required this.name,
+    this.avatar,
+    this.email,
+  });
+
+  final int id;
+  final String name;
+  final String? avatar;
+  final String? email;
+
+  factory ActivityActor.fromJson(Map<String, dynamic> json) {
+    return ActivityActor(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      avatar: json['avatar'],
+      email: json['email'],
+    );
+  }
+}
+
+class ActivityChange {
+  const ActivityChange({
+    required this.field,
+    this.oldDisplay,
+    this.newDisplay,
+  });
+
+  final String field;
+  final dynamic oldDisplay;
+  final dynamic newDisplay;
+
+  factory ActivityChange.fromJson(Map<String, dynamic> json) {
+    return ActivityChange(
+      field: json['field'] ?? '',
+      oldDisplay: json['old_display'],
+      newDisplay: json['new_display'],
     );
   }
 }

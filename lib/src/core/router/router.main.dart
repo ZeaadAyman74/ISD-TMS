@@ -5,7 +5,6 @@ import 'package:isd_tms/src/core/di/dependency_injection.dart';
 import 'package:isd_tms/src/features/auth/data/repo/auth_repo.dart';
 import 'package:isd_tms/src/features/auth/presentation/bloc/login_cubit.dart';
 import 'package:isd_tms/src/features/auth/presentation/views/screens/login_screen.dart';
-import 'package:isd_tms/src/features/board/data/models/board_models.dart';
 import 'package:isd_tms/src/features/board/data/models/members_screen_args.dart';
 import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
@@ -13,6 +12,7 @@ import 'package:isd_tms/src/features/board/presentation/views/screens/board_scre
 import 'package:isd_tms/src/features/board/presentation/views/screens/members/members_screen.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/task_detail_screen.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
+import 'package:isd_tms/src/features/board/data/models/task_detail_args.dart';
 import 'package:isd_tms/src/features/projects/data/repo/projects_repo.dart';
 import 'package:isd_tms/src/features/projects/presentation/bloc/projects_cubit.dart';
 import 'package:isd_tms/src/features/projects/presentation/views/screens/projects_screen.dart';
@@ -60,11 +60,13 @@ class AppRouter {
           settings,
         );
 //--------------------------------------------------------------------
-
       case Routes.taskDetail:
-        final card = arguments as CardModel;
+        final args = arguments as TaskDetailArgs;
         return _buildRoute(
-          TaskDetailScreen(card: card),
+          BlocProvider.value(
+            value: args.boardCubit,
+            child: TaskDetailScreen(card: args.card, projectId: args.projectId),
+          ),
           settings,
         );
 //--------------------------------------------------------------------

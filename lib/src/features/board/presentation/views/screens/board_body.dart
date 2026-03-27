@@ -84,7 +84,7 @@ class _BoardBodyState extends State<BoardBody> with SingleTickerProviderStateMix
                     children: state.lists.map((list) {
                       return Padding(
                         padding: EdgeInsets.all(16.w),
-                        child: BoardColumnWidget(boardList: list),
+                        child: BoardColumnWidget(boardList: list, projectId: widget.projectId),
                       );
                     }).toList(),
                   ),

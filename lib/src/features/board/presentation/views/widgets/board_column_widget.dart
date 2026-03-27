@@ -9,9 +9,10 @@ import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task/a
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 
 class BoardColumnWidget extends StatelessWidget {
-  const BoardColumnWidget({super.key, required this.boardList});
+  const BoardColumnWidget({super.key, required this.boardList, required this.projectId});
 
   final BoardListModel boardList;
+  final int projectId;
 
   Color get _columnColor {
     switch (boardList.title.toLowerCase()) {
@@ -101,7 +102,7 @@ class BoardColumnWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.only(bottom: 8.h),
-                  child: TaskCardWidget(card: cardsForList[index]),
+                  child: TaskCardWidget(card: cardsForList[index], projectId: projectId),
                 );
               },
             ),

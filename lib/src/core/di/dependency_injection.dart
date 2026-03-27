@@ -18,6 +18,7 @@ import 'package:isd_tms/src/features/projects/data/repo/projects_repo.dart';
 // Board
 import 'package:isd_tms/src/features/board/data/service/board_service.dart';
 import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/card_details/card_details_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -48,5 +49,8 @@ class DependencyInjection {
     // --- Board ---
     getIt.registerLazySingleton(() => BoardService(getIt<Dio>()));
     getIt.registerLazySingleton(() => BoardRepo(getIt<BoardService>()));
+
+    // --- Card Details ---
+    getIt.registerFactory(() => CardDetailsCubit(getIt<BoardRepo>()));
   }
 }

@@ -15,6 +15,11 @@ class EndPoints {
   // Cards
   static const createCard = '/api/my/projects/{projectId}/cards';
   static const cardDetail = '/api/my/projects/{projectId}/cards/{cardId}';
+  static const cardAttachments = '/api/my/projects/{projectId}/cards/{cardId}/attachments';
+  static const cardAttachmentDetail = '/api/my/projects/{projectId}/cards/{cardId}/attachments/{attachmentId}';
+  static const cardComments = '/api/my/projects/{projectId}/cards/{cardId}/comments';
+  static const cardCommentDetail = '/api/my/projects/{projectId}/cards/{cardId}/comments/{commentId}';
+  static const cardActivities = '/api/my/projects/{projectId}/cards/{cardId}/activities';
 
   // Lookups
   static const cardTypes = '/api/lookups/card-types';
