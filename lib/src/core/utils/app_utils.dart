@@ -1,36 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:isd_tms/src/core/extensions/ui_extension.dart';
-import 'package:isd_tms/src/core/theme/app_colors.dart';
-import 'package:isd_tms/src/core/utils/enums.dart';
 
 class Utils {
   Utils._();
-
-  //----------------------------------------------------------------------------
-  static void showToast(
-      String message,  ToastStates state) =>
-      Fluttertoast.showToast(
-          msg: message,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 2,
-          backgroundColor: _chooseToastColor(state),
-          textColor: Colors.white,
-          fontSize: 16.0);
-
-  static Color _chooseToastColor(ToastStates state) {
-    switch (state) {
-      case ToastStates.error:
-        return Colors.black;
-      case ToastStates.success:
-        return AppColors.primary;
-      case ToastStates.warning:
-        return Colors.amber;
-    }
-  }
-
   //----------------------------------------------------------------------------
 
   static void showAppBottomSheet({required BuildContext context,

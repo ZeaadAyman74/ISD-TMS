@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/task_details/data/models/task_details_models.dart';
 
 class TypeCheckboxListTile extends StatelessWidget {
   const TypeCheckboxListTile({

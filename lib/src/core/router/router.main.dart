@@ -10,9 +10,10 @@ import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/board_screen.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/members/members_screen.dart';
-import 'package:isd_tms/src/features/board/presentation/views/screens/task_detail_screen.dart';
+import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
+import 'package:isd_tms/src/features/task_details/presentation/views/screens/task_detail_screen.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
-import 'package:isd_tms/src/features/board/data/models/task_detail_args.dart';
+import 'package:isd_tms/src/features/task_details/data/models/task_detail_args.dart';
 import 'package:isd_tms/src/features/projects/data/repo/projects_repo.dart';
 import 'package:isd_tms/src/features/projects/presentation/bloc/projects_cubit.dart';
 import 'package:isd_tms/src/features/projects/presentation/views/screens/projects_screen.dart';
@@ -25,11 +26,11 @@ class AppRouter {
       GlobalKey<NavigatorState>();
 
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-    final arguments=settings.arguments;
+    final arguments = settings.arguments;
     switch (settings.name) {
       case Routes.initial:
         return _buildRoute(const SplashScreen(), settings);
-//--------------------------------------------------------------------
+      //--------------------------------------------------------------------
       case Routes.login:
         return _buildRoute(
           BlocProvider(
@@ -38,7 +39,7 @@ class AppRouter {
           ),
           settings,
         );
-//--------------------------------------------------------------------
+      //--------------------------------------------------------------------
 
       case Routes.projects:
         return _buildRoute(
@@ -48,7 +49,7 @@ class AppRouter {
           ),
           settings,
         );
-//--------------------------------------------------------------------
+      //--------------------------------------------------------------------
 
       case Routes.board:
         final project = arguments as ProjectModel;
@@ -59,24 +60,28 @@ class AppRouter {
           ),
           settings,
         );
-//--------------------------------------------------------------------
+      //--------------------------------------------------------------------
       case Routes.taskDetail:
         final args = arguments as TaskDetailArgs;
         return _buildRoute(
-          BlocProvider.value(
-            value: args.boardCubit,
-            child: TaskDetailScreen(card: args.card, projectId: args.projectId),
+          BlocProvider(
+            create: (context) =>
+                getIt<TaskDetailsCubit>()
+                  ..getCardDetails(args.card.projectId, args.card.id),
+            child: BlocProvider.value(
+              value: args.boardCubit,
+              child: TaskDetailScreen(
+                card: args.card,
+              ),
+            ),
           ),
           settings,
         );
-//--------------------------------------------------------------------
+      //--------------------------------------------------------------------
       case Routes.members:
-        final  args= arguments as MembersScreenArgs;
-        return _buildRoute(
-          MembersScreen(args:args),
-          settings,
-        );
-//--------------------------------------------------------------------
+        final args = arguments as MembersScreenArgs;
+        return _buildRoute(MembersScreen(args: args), settings);
+      //--------------------------------------------------------------------
 
       default:
         return null;

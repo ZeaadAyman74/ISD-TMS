@@ -50,8 +50,7 @@ dependencies:
   # Firebase & Notifications
   firebase_core: ^2.27.0
   firebase_messaging: ^14.7.15
-  flutter_local_notifications: ^17.0.0
-  fluttertoast: ^8.2.8
+#  flutter_local_notifications: ^17.0.0
   image_picker: ^1.2.1
   flutter_image_compress: ^2.3.0
   hive_ce: ^2.19.3
@@ -59,6 +58,7 @@ dependencies:
   retrofit: ^4.9.2
   retrofit_generator: ^10.2.3
   quick_log: ^5.5.3
+  file_picker: ^8.0.7
 
 dev_dependencies:
   flutter_test:

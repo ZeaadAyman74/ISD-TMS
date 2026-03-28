@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This application needs access to your photo library to securely upload images and attach them to your tasks.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This application needs camera access to allow you to take photos and attach them directly to your tasks.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This application needs microphone access when capturing video to attach to your tasks.</string>
 </dict>
 </plist>

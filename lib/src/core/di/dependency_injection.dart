@@ -18,7 +18,11 @@ import 'package:isd_tms/src/features/projects/data/repo/projects_repo.dart';
 // Board
 import 'package:isd_tms/src/features/board/data/service/board_service.dart';
 import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
-import 'package:isd_tms/src/features/board/presentation/bloc/card_details/card_details_cubit.dart';
+
+// Task Details
+import 'package:isd_tms/src/features/task_details/data/service/task_details_service.dart';
+import 'package:isd_tms/src/features/task_details/data/repo/task_details_repo.dart';
+import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -50,7 +54,9 @@ class DependencyInjection {
     getIt.registerLazySingleton(() => BoardService(getIt<Dio>()));
     getIt.registerLazySingleton(() => BoardRepo(getIt<BoardService>()));
 
-    // --- Card Details ---
-    getIt.registerFactory(() => CardDetailsCubit(getIt<BoardRepo>()));
+    // --- Task Details ---
+    getIt.registerLazySingleton(() => TaskDetailsService(getIt<Dio>()));
+    getIt.registerLazySingleton(() => TaskDetailsRepo(getIt<TaskDetailsService>()));
+    getIt.registerFactory(() => TaskDetailsCubit(getIt<TaskDetailsRepo>()));
   }
 }

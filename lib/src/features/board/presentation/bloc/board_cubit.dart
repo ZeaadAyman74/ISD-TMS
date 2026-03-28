@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/task_details/data/models/task_details_models.dart';
 import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
 import 'package:isd_tms/src/core/network/result/network_result.dart';
 import 'package:isd_tms/src/core/network/result/error/network_exceptions.dart';
+import 'package:isd_tms/src/features/task_details/data/models/update_task_model.dart';
 
 part 'board_state.dart';
 
@@ -108,6 +110,8 @@ class BoardCubit extends Cubit<BoardState> {
     return listCards..sort((a, b) => a.position.compareTo(b.position));
   }
 
+  //----------------------------------------------------------------------------
+
   void updateFilters({
     String? search,
     List<int>? assigneeIds,
@@ -129,6 +133,7 @@ class BoardCubit extends Cubit<BoardState> {
     selectedTypeKeys = [];
     emit(BoardLoaded(lists: lists, cards: cards));
   }
+  //----------------------------------------------------------------------------
 
   Future<void> addCard({
     required String title,
@@ -160,30 +165,57 @@ class BoardCubit extends Cubit<BoardState> {
     );
   }
 
-  Future<void> updateCard({
+  Future<void> updateTask({
     required int cardId,
-    required Map<String, dynamic> data,
+    required UpdateTaskModel data,
   }) async {
     if (currentProjectId == null) return;
 
-    emit(const UpdateCardLoading());
+    emit(const UpdateTaskLoading());
     final result = await _repo.updateCard(
       projectId: currentProjectId!,
       cardId: cardId,
-      data: data,
+      data: data.toJson(),
     );
 
     result.when(
       success: (updatedCard) {
         final index = cards.indexWhere((c) => c.id == cardId);
         if (index != -1) {
-          cards[index] = updatedCard;
+          final oldCard = cards[index];
+          final finalCard = CardModel(
+            id: updatedCard.id,
+            projectId: updatedCard.projectId,
+            listId: updatedCard.listId,
+            title: updatedCard.title,
+            description: updatedCard.description,
+            type: updatedCard.type,
+            priority: updatedCard.priority,
+            dueDate: updatedCard.dueDate,
+            position: updatedCard.position,
+            commentsCount: oldCard.commentsCount,
+            labels: updatedCard.labels.isNotEmpty ? updatedCard.labels : oldCard.labels,
+            assignees: data.assignees != null
+                ? members
+                    .where((m) => data.assignees!.contains(m.userId))
+                    .map((m) => CardAssignee(
+                          id: m.userId,
+                          fullName: m.name,
+                          email: m.email,
+                        ))
+                    .toList()
+                : (updatedCard.assignees.isNotEmpty ? updatedCard.assignees : oldCard.assignees),
+            createdAt: updatedCard.createdAt ?? oldCard.createdAt,
+          );
+          cards[index] = finalCard;
+          emit(UpdateTaskSuccess(finalCard));
+        } else {
+          emit(UpdateTaskSuccess(updatedCard));
         }
-        emit(UpdateCardSuccess(updatedCard));
         emit(BoardLoaded(lists: lists, cards: cards));
       },
       failure: (error) {
-        emit(UpdateCardError(NetworkExceptions.getErrorMessage(error)));
+        emit(UpdateTaskError(NetworkExceptions.getErrorMessage(error)));
         emit(BoardLoaded(lists: lists, cards: cards));
       },
     );

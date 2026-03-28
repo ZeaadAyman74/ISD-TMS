@@ -40,16 +40,16 @@ final class AddCardError extends BoardState {
 }
 
 // Update Card States
-final class UpdateCardLoading extends BoardState {
-  const UpdateCardLoading();
+final class UpdateTaskLoading extends BoardState {
+  const UpdateTaskLoading();
 }
 
-final class UpdateCardSuccess extends BoardState {
-  const UpdateCardSuccess(this.card);
+final class UpdateTaskSuccess extends BoardState {
+  const UpdateTaskSuccess(this.card);
   final CardModel card;
 }
 
-final class UpdateCardError extends BoardState {
-  const UpdateCardError(this.error);
+final class UpdateTaskError extends BoardState {
+  const UpdateTaskError(this.error);
   final String error;
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:isd_tms/src/core/theme/app_colors.dart';
-import 'package:isd_tms/src/features/board/data/models/board_models.dart';
-import 'package:isd_tms/src/features/board/presentation/bloc/card_details/card_details_cubit.dart';
+import 'package:isd_tms/src/features/task_details/data/models/task_comments/task_comment_model.dart';
+import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
+import 'package:isd_tms/src/features/task_details/presentation/views/widgets/comments/comment_card.dart';
 
 class CommentList extends StatelessWidget {
   const CommentList({super.key, required this.projectId, required this.cardId, this.comments = const []});
 
   final int projectId;
   final int cardId;
-  final List<CardComment> comments;
+  final List<TaskCommentModel> comments;
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +21,12 @@ class CommentList extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             itemCount: comments.length,
-            padding: EdgeInsets.symmetric(vertical: 16.h),
+            padding: EdgeInsets.only(top: 16.h,bottom: 30.h),
             itemBuilder: (context, index) {
               final comment = comments[index];
-              return _CommentItem(
+              return CommentCard(
                 comment: comment,
-                onDelete: () => context.read<CardDetailsCubit>().deleteComment(projectId, cardId, comment.id),
+                onDelete: () => context.read<TaskDetailsCubit>().deleteComment(projectId, cardId, comment.id),
               );
             },
           ),
@@ -88,58 +88,13 @@ class _CommentInputState extends State<_CommentInput> {
               ElevatedButton(
                 onPressed: () {
                   if (_controller.text.isNotEmpty) {
-                    context.read<CardDetailsCubit>().addComment(widget.projectId, widget.cardId, _controller.text);
+                    context.read<TaskDetailsCubit>().addComment(widget.projectId, widget.cardId, '<p>${_controller.text.trim()}</p>');
                     _controller.clear();
                   }
                 },
                 child: const Text('Comment'),
               ),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CommentItem extends StatelessWidget {
-  const _CommentItem({required this.comment, required this.onDelete});
-  final CardComment comment;
-  final VoidCallback onDelete;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 16.r,
-            backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-            child: Text(
-              comment.user?.initials ?? '?',
-              style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: AppColors.primary),
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(comment.user?.name ?? 'Admin User', style: context.appTextTheme.font14TextPrimarySemiBold),
-                    const Spacer(),
-                    Text(comment.createdAt.split('T').first, style: context.appTextTheme.font11TextSecondaryRegular),
-                    IconButton(
-                        onPressed: onDelete,
-                        icon: const Icon(Icons.delete_outline, size: 16, color: AppColors.error)),
-                  ],
-                ),
-                Text(comment.content, style: context.appTextTheme.font14TextPrimaryRegular),
-              ],
-            ),
           ),
         ],
       ),

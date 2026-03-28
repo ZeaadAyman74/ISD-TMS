@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/theme/app_colors.dart';
-import 'package:isd_tms/src/features/board/data/models/board_models.dart';
-import 'package:isd_tms/src/features/board/presentation/bloc/card_details/card_details_cubit.dart';
+import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
-import 'package:isd_tms/src/features/board/presentation/views/widgets/card_details/comment_list.dart';
-import 'package:isd_tms/src/features/board/presentation/views/widgets/card_details/activity_list.dart';
+import 'package:isd_tms/src/features/task_details/presentation/views/widgets/comments/comment_list.dart';
+import 'package:isd_tms/src/features/task_details/presentation/views/widgets/activity/activity_list.dart';
 
 class CommentHistoryTabs extends StatefulWidget {
   const CommentHistoryTabs({super.key, required this.projectId, required this.cardId});
@@ -35,7 +34,7 @@ class _CommentHistoryTabsState extends State<CommentHistoryTabs> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CardDetailsCubit, CardDetailsState>(
+    return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
       builder: (context, state) {
         return Column(
           children: [

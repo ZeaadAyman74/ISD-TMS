@@ -64,7 +64,8 @@ class _MemberSelectorBottomSheetState extends State<MemberSelectorBottomSheet> {
               itemCount: widget.allMembers.length,
               itemBuilder: (context, index) {
                 final member = widget.allMembers[index];
-                final isSelected = _tempSelectedIds.contains(member.id);
+                final isSelected = _tempSelectedIds.contains(member.userId);
+
                 return ListTile(
                   leading: CircleAvatar(
                     backgroundColor: AppColors.primary.withValues(alpha: 0.1),
@@ -79,9 +80,9 @@ class _MemberSelectorBottomSheetState extends State<MemberSelectorBottomSheet> {
                     onChanged: (val) {
                       setState(() {
                         if (val == true) {
-                          _tempSelectedIds.add(member.id);
+                          _tempSelectedIds.add(member.userId);
                         } else {
-                          _tempSelectedIds.remove(member.id);
+                          _tempSelectedIds.remove(member.userId);
                         }
                       });
                     },

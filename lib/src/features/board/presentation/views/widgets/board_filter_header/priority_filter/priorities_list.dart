@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/task_details/data/models/task_details_models.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/board_filter_header/priority_filter/priority_checkbox_list_tile.dart';
 
 class PrioritiesList extends StatelessWidget {
