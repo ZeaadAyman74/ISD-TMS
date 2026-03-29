@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/theme/app_colors.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
+import 'package:isd_tms/src/core/widgets/custom_field_label.dart';
 
 class CustomFormField extends StatelessWidget {
   const CustomFormField({
@@ -83,11 +84,7 @@ class CustomFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (labelText != null) ...[
-          Text(
-            labelText!,
-            style: context.appTextTheme.font14TextPrimarySemiBold,
-          ),
-          SizedBox(height: 8.h),
+          CustomFieldLabel(label: labelText!)
         ],
         TextFormField(
           controller: controller,

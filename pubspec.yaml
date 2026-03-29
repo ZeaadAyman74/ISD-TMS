@@ -38,6 +38,10 @@ dependencies:
   flutter_spinkit: ^5.2.0
   shimmer: ^3.0.0
   lottie: ^3.1.0
+  quill_html_editor:
+    git:
+      url: https://github.com/the-airbender/quill_html_editor.git
+      ref: a171f44
 
   # Localization
   intl: ^0.20.2
@@ -49,7 +53,7 @@ dependencies:
 
   # Firebase & Notifications
   firebase_core: ^2.27.0
-  firebase_messaging: ^14.7.15
+  firebase_messaging: ^14.7.10
 #  flutter_local_notifications: ^17.0.0
   image_picker: ^1.2.1
   flutter_image_compress: ^2.3.0
@@ -58,7 +62,7 @@ dependencies:
   retrofit: ^4.9.2
   retrofit_generator: ^10.2.3
   quick_log: ^5.5.3
-  file_picker: ^8.0.7
+  file_picker: ^9.0.0
 
 dev_dependencies:
   flutter_test:

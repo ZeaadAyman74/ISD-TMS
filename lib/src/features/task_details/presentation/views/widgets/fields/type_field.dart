@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:isd_tms/src/core/widgets/custom_field_label.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:isd_tms/src/features/task_details/data/models/update_task_model.dart';
@@ -29,11 +30,7 @@ class _TypeFieldState extends State<TypeField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Type',
-          style: context.appTextTheme.font14TextPrimarySemiBold,
-        ),
-        SizedBox(height: 4.h),
+      const CustomFieldLabel(label: 'Type'),
         Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 12.w),

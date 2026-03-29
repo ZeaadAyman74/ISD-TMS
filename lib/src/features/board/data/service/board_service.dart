@@ -24,6 +24,12 @@ abstract class BoardService {
     @Body() Map<String, dynamic> data,
   );
 
+  @DELETE(EndPoints.cardDetail)
+  Future<HttpResponse<dynamic>> deleteCard(
+    @Path("projectId") int projectId,
+    @Path("cardId") int cardId,
+  );
+
   @GET(EndPoints.cardTypes)
   Future<HttpResponse<dynamic>> getCardTypes();
 

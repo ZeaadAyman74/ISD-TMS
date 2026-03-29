@@ -42,13 +42,13 @@ class CustomButton extends StatelessWidget {
         }
       },
       child: Container(
-        height: height ?? 48.h,
+        height: height ?? 45.h,
         width: width ?? double.infinity,
         decoration: BoxDecoration(
           color: !isActive
               ? Colors.grey.shade400
               : backgroundColor ?? AppColors.primary,
-          borderRadius: BorderRadius.circular(borderRadius ?? 8.r),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
           border: withBorder
               ? Border.all(
                   color: borderColor ?? AppColors.primary,

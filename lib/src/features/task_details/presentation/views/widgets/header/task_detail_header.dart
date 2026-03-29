@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:isd_tms/src/features/board/data/models/task_utils.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/task_card/task_status_chip.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/views/widgets/header/task_status_drop_down.dart';
+import 'package:isd_tms/src/core/theme/app_colors.dart';
 
 class TaskDetailHeader extends StatelessWidget {
   const TaskDetailHeader({super.key});
@@ -13,8 +15,7 @@ class TaskDetailHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
-      buildWhen: (previous, current) =>
-          current.status == TaskDetailsStatus.updateCard,
+      buildWhen: (previous, current) => current is UpdateCard,
       builder: (context, state) {
         final card=context.read<TaskDetailsCubit>().currentCard;
         return Container(
@@ -51,6 +52,40 @@ class TaskDetailHeader extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (confirmContext) => AlertDialog(
+                          title: const Text('Delete Task'),
+                          content: const Text(
+                              'Are you sure you want to delete this task?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(confirmContext),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(confirmContext);
+                                context.read<BoardCubit>().deleteTask(card.id);
+                              },
+                              child: const Text(
+                                'Delete',
+                                style:
+                                    TextStyle(color: AppColors.error),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.delete_outline,
+                      color: AppColors.error,
+                    ),
+                    visualDensity: VisualDensity.compact,
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),

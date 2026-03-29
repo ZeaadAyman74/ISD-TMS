@@ -24,7 +24,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get login => 'تسجيل الدخول';
 
   @override
-  String get email_label => 'البريد الإلكتروني أو رقم الامتداد';
+  String get email_label => 'البريد الإلكتروني';
 
   @override
   String get email_hint => 'أدخل بريدك الإلكتروني';

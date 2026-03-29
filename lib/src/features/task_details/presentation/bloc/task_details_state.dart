@@ -1,35 +1,62 @@
 part of 'task_details_cubit.dart';
 
-enum TaskDetailsStatus { initial, loading, loaded, error, uploadingAttachment, addingComment ,updateCard}
+sealed class TaskDetailsState {
+  const TaskDetailsState();
+}
 
-class TaskDetailsState {
-  final TaskDetailsStatus status;
-  final List<TaskAttachmentModel> attachments;
-  final List<TaskCommentModel> comments;
-  final List<TaskActivityModel> activities;
-  final String? errorMessage;
+final class TaskDetailsInitial extends TaskDetailsState {
+  const TaskDetailsInitial();
+}
 
-  const TaskDetailsState({
-    this.status = TaskDetailsStatus.initial,
-    this.attachments = const [],
-    this.comments = const [],
-    this.activities = const [],
-    this.errorMessage,
-  });
+class UpdateCard extends TaskDetailsState {}
 
-  TaskDetailsState copyWith({
-    TaskDetailsStatus? status,
-    List<TaskAttachmentModel>? attachments,
-    List<TaskCommentModel>? comments,
-    List<TaskActivityModel>? activities,
-    String? errorMessage,
-  }) {
-    return TaskDetailsState(
-      status: status ?? this.status,
-      attachments: attachments ?? this.attachments,
-      comments: comments ?? this.comments,
-      activities: activities ?? this.activities,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
+class ErrorState extends TaskDetailsState {
+  final String error;
+
+  const ErrorState(this.error);
+
+}
+
+
+class GetAttachmentsLoading extends TaskDetailsState {}
+class GetAttachmentsSuccess extends TaskDetailsState {}
+class GetAttachmentsError extends ErrorState {
+  const GetAttachmentsError(super.error);
+}
+
+class UploadAttachmentLoading extends TaskDetailsState {}
+class UploadAttachmentSuccess extends TaskDetailsState {}
+class UploadAttachmentError extends ErrorState {
+  const UploadAttachmentError(super.error);
+}
+
+class DeleteAttachmentLoading extends TaskDetailsState {}
+class DeleteAttachmentSuccess extends TaskDetailsState {}
+class DeleteAttachmentError extends ErrorState {
+  const DeleteAttachmentError(super.error);
+}
+
+
+class AddCommentLoading extends TaskDetailsState {}
+class AddCommentSuccess extends TaskDetailsState {}
+class AddCommentError extends ErrorState {
+  const AddCommentError(super.error);
+}
+
+class DeleteCommentLoading extends TaskDetailsState {}
+class DeleteCommentSuccess extends TaskDetailsState {}
+class DeleteCommentError extends ErrorState {
+  const DeleteCommentError(super.error);
+}
+
+class GetCommentsLoading extends TaskDetailsState {}
+class GetCommentsSuccess extends TaskDetailsState {}
+class GetCommentsError extends ErrorState {
+  const GetCommentsError(super.error);
+}
+
+class GetHistoryLoading extends TaskDetailsState {}
+class GetHistorySuccess extends TaskDetailsState {}
+class GetHistoryError extends ErrorState {
+  const GetHistoryError(super.error);
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:isd_tms/src/core/theme/app_colors.dart';
+import 'package:isd_tms/src/core/widgets/app_html_field.dart';
+import 'package:isd_tms/src/core/widgets/custom_field_label.dart';
 import 'package:isd_tms/src/features/task_details/data/models/update_task_model.dart';
-import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
+import 'package:isd_tms/src/features/task_details/presentation/views/widgets/fields/save_field_button.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
 class DescriptionField extends StatefulWidget {
   const DescriptionField({super.key});
@@ -16,32 +17,28 @@ class DescriptionField extends StatefulWidget {
 
 class _DescriptionFieldState extends State<DescriptionField> {
   TaskDetailsCubit get cubit => context.read<TaskDetailsCubit>();
-  late TextEditingController _controller;
+  BoardCubit get boardCubit => context.read<BoardCubit>();
+  late QuillEditorController controller;
   bool _isChanged = false;
-
-  String _stripHtml(String text) {
-    return text.replaceAll(RegExp(r'<[^>]*>', multiLine: true, caseSensitive: true), '').trim();
-  }
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(
-      text: _stripHtml(cubit.currentCard!.description ?? ''),
-    );
+    controller = QuillEditorController();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.dispose();
     super.dispose();
   }
 
-  void _onSave() {
-    if (_controller.text.trim().isNotEmpty) {
-      context.read<BoardCubit>().updateTask(
+  Future<void> _onSave() async {
+    final text = await controller.getText();
+    if (text.isNotEmpty) {
+      boardCubit.updateTask(
         cardId: cubit.currentCard!.id,
-        data: UpdateTaskModel(description: '<p>${_controller.text.trim()}</p>'),
+        data: UpdateTaskModel(description: text),
       );
       setState(() => _isChanged = false);
     }
@@ -50,105 +47,39 @@ class _DescriptionFieldState extends State<DescriptionField> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
-      buildWhen: (previous, current) =>
-          current.status == TaskDetailsStatus.updateCard,
+      buildWhen: (previous, current) => current is UpdateCard,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'Description',
-              style: context.appTextTheme.font14TextPrimarySemiBold,
+          const CustomFieldLabel(label: 'Description'),
+            AppHtmlField(
+              controller: controller,
+              hint: "Add Description...",
+              initialText: cubit.currentCard!.description,
+              onChange: (val) {
+                print(val);
+                print(cubit.currentCard!.description);
+                final changed = (val != cubit.currentCard!.description);
+                if (_isChanged != changed) {
+                  setState(() => _isChanged = changed);
+                }
+              },
             ),
-            SizedBox(height: 8.h),
-            Container(
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: context.appColors.secondaryBackground,
-                borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(
-                  color: context.appColors.secondaryBackground,
+            if (_isChanged) ...[
+              Align(
+                alignment: Alignment.centerRight,
+                child: SaveFieldButton(
+                  onPressed: () {
+                    _onSave();
+                  },
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.format_bold, size: 20),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.format_italic, size: 20),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.format_list_bulleted, size: 20),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.format_list_numbered, size: 20),
-                      ),
-                    ],
-                  ),
-                  TextField(
-                    controller: _controller,
-                    maxLines: null,
-                    minLines: 3,
-                    style: context.appTextTheme.font14TextPrimaryRegular,
-                    onChanged: (val) {
-                      final changed =
-                          val.trim() !=
-                              _stripHtml(cubit.currentCard!.description ?? '') &&
-                          val.trim().isNotEmpty;
-                      if (_isChanged != changed) {
-                        setState(() => _isChanged = changed);
-                      }
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Add description...',
-                      border: InputBorder.none,
-                    ),
-                  ),
-                  if (_isChanged) ...[
-                    Row(
-                      children: [
-                        const Spacer(),
-                        ElevatedButton(
-                          onPressed: _controller.text.trim().isEmpty
-                              ? null
-                              : _onSave,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 8.h,
-                            ),
-                            minimumSize: const Size(0, 0),
-                          ),
-                          child: Text(
-                            'Save',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ],
-              ),
-            ),
+            ],
           ],
         );
       },
     );
   }
 }
-

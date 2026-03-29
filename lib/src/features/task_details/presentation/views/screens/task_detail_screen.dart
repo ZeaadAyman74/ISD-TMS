@@ -50,11 +50,8 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           TaskDetailsForm(
                             maxWidth: constraints.maxWidth,
                           ),
-                          SizedBox(height: 32.h),
-                          CommentHistoryTabs(
-                            projectId: cubit.currentCard!.projectId,
-                            cardId: cubit.currentCard!.id,
-                          ),
+                          32.verticalSpace,
+                          const CommentHistoryTabs(),
                         ],
                       ),
                     );

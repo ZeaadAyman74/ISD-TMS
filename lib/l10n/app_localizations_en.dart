@@ -25,7 +25,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'Login';
 
   @override
-  String get email_label => 'Email or Extension Number';
+  String get email_label => 'Email';
 
   @override
   String get email_hint => 'Enter your email';

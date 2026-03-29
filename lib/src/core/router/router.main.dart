@@ -66,8 +66,8 @@ class AppRouter {
         return _buildRoute(
           BlocProvider(
             create: (context) =>
-                getIt<TaskDetailsCubit>()
-                  ..getCardDetails(args.card.projectId, args.card.id),
+                getIt<TaskDetailsCubit>()..updateCurrentCard(args.card)
+                  ..getCardDetails(),
             child: BlocProvider.value(
               value: args.boardCubit,
               child: TaskDetailScreen(

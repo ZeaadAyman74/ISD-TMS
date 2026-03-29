@@ -53,3 +53,18 @@ final class UpdateTaskError extends BoardState {
   const UpdateTaskError(this.error);
   final String error;
 }
+
+// Delete Card States
+final class DeleteTaskLoading extends BoardState {
+  const DeleteTaskLoading();
+}
+
+final class DeleteTaskSuccess extends BoardState {
+  const DeleteTaskSuccess();
+}
+
+final class DeleteTaskError extends BoardState {
+  const DeleteTaskError(this.error);
+  final String error;
+}
+

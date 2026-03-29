@@ -131,7 +131,7 @@ abstract class AppLocalizations {
   /// No description provided for @email_label.
   ///
   /// In en, this message translates to:
-  /// **'Email or Extension Number'**
+  /// **'Email'**
   String get email_label;
 
   /// No description provided for @email_hint.

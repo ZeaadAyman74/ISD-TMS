@@ -118,6 +118,7 @@ class BoardCubit extends Cubit<BoardState> {
     List<String>? priorities,
     List<String>? typeKeys,
   }) {
+    print(assigneeIds);
     if (search != null) searchQuery = search;
     if (assigneeIds != null) selectedAssigneeIds = assigneeIds;
     if (priorities != null) selectedPriorities = priorities;
@@ -220,4 +221,27 @@ class BoardCubit extends Cubit<BoardState> {
       },
     );
   }
+
+  Future<void> deleteTask(int cardId) async {
+    if (currentProjectId == null) return;
+
+    emit(const DeleteTaskLoading());
+    final result = await _repo.deleteCard(
+      projectId: currentProjectId!,
+      cardId: cardId,
+    );
+
+    result.when(
+      success: (_) {
+        cards.removeWhere((c) => c.id == cardId);
+        emit(const DeleteTaskSuccess());
+        emit(BoardLoaded(lists: lists, cards: cards));
+      },
+      failure: (error) {
+        emit(DeleteTaskError(NetworkExceptions.getErrorMessage(error)));
+        emit(BoardLoaded(lists: lists, cards: cards));
+      },
+    );
+  }
 }
+

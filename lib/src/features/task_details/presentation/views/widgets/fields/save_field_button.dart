@@ -3,9 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/theme/app_colors.dart';
 
 class SaveFieldButton extends StatelessWidget {
-  const SaveFieldButton({super.key, required this.onPressed});
+  const SaveFieldButton({super.key, required this.onPressed,this.title});
 
   final VoidCallback onPressed;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class SaveFieldButton extends StatelessWidget {
         minimumSize: const Size(0, 0),
       ),
       child: Text(
-        'Save',
+        title??'Save',
         style: TextStyle(
           fontSize: 12.sp,
           fontWeight: FontWeight.w500,

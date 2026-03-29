@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isd_tms/src/core/extensions/ui_extension.dart';
 import 'package:isd_tms/src/core/network/result/network_result.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_activity/task_activity_model.dart';
@@ -11,7 +10,7 @@ import 'package:isd_tms/src/core/network/result/error/network_exceptions.dart';
 part 'task_details_state.dart';
 
 class TaskDetailsCubit extends Cubit<TaskDetailsState> {
-  TaskDetailsCubit(this._repo) : super(const TaskDetailsState());
+  TaskDetailsCubit(this._repo) : super(const TaskDetailsInitial());
   final TaskDetailsRepo _repo;
 
   // ------------------------------------------------------------------------------
@@ -20,80 +19,70 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
 
   void updateCurrentCard(CardModel newCard) {
     currentCard = newCard;
-    printMe(newCard.assignees);
-    emit(state.copyWith(status: TaskDetailsStatus.updateCard));
+    emit(UpdateCard());
   }
 
   // ------------------------------------------------------------------------------
-  List<TaskAttachmentModel> _attachments = [];
-  List<TaskCommentModel> _comments = [];
-  List<TaskActivityModel> _activities = [];
+  List<TaskAttachmentModel> attachments = [];
+  List<TaskCommentModel> comments = [];
+  List<TaskActivityModel> activities = [];
 
-  Future<void> getCardDetails(int projectId, int cardId) async {
-    emit(state.copyWith(status: TaskDetailsStatus.loading));
-
-    final results = await Future.wait([
-      _repo.getCardAttachments(projectId, cardId),
-      _repo.getCardComments(projectId, cardId),
-      _repo.getCardActivities(projectId, cardId),
+  Future<void> getCardDetails() async {
+    await Future.wait([
+      getAttachments(),
+      getComments(),
     ]);
-
-    final attachmentsResult = results[0];
-    final commentsResult = results[1];
-    final activitiesResult = results[2];
-
-    String? errorMessage;
-
-    if (attachmentsResult is Success<TaskAttachmentsResponse>) {
-      _attachments = attachmentsResult.data.attachments;
-    } else if (attachmentsResult is Failure<TaskAttachmentsResponse>) {
-      errorMessage = NetworkExceptions.getErrorMessage(attachmentsResult.error);
-    }
-
-    if (commentsResult is Success<TaskCommentsResponse>) {
-      _comments = commentsResult.data.comments;
-    } else if (commentsResult is Failure<TaskCommentsResponse>) {
-      errorMessage ??= NetworkExceptions.getErrorMessage(commentsResult.error);
-    }
-
-    if (activitiesResult is Success<TaskActivitiesResponse>) {
-      _activities = activitiesResult.data.activities;
-    } else if (activitiesResult is Failure<TaskActivitiesResponse>) {
-      errorMessage ??= NetworkExceptions.getErrorMessage(
-        activitiesResult.error,
-      );
-    }
-
-    if (errorMessage != null &&
-        _attachments.isEmpty &&
-        _comments.isEmpty &&
-        _activities.isEmpty) {
-      emit(
-        state.copyWith(
-          status: TaskDetailsStatus.error,
-          errorMessage: errorMessage,
-        ),
-      );
-    } else {
-      _emitLoaded();
-    }
   }
 
-  void _emitLoaded({TaskDetailsStatus status = TaskDetailsStatus.loaded}) {
-    emit(
-      state.copyWith(
-        status: status,
-        attachments: List.from(_attachments),
-        comments: List.from(_comments),
-        activities: List.from(_activities),
-      ),
+  Future<void> getComments() async {
+    emit(GetCommentsLoading());
+    final response = await _repo.getCardComments(currentCard!.projectId,
+      currentCard!.id,);
+    response.when(
+      success: (data) {
+        comments = data.comments;
+        emit(GetCommentsSuccess());
+      },
+      failure: (error) {
+        emit(GetCommentsError(NetworkExceptions.getErrorMessage(error)));
+      },
+    );
+  }
+
+  Future<void> getAttachments() async {
+    emit(GetAttachmentsLoading());
+    final response = await _repo.getCardAttachments(currentCard!.projectId,
+      currentCard!.id,);
+    response.when(
+      success: (data) {
+        attachments = data.attachments;
+        emit(GetAttachmentsSuccess());
+      },
+      failure: (error) {
+        emit(GetAttachmentsError(NetworkExceptions.getErrorMessage(error)));
+      },
+    );
+  }
+
+  Future<void> getHistory() async {
+    emit(GetHistoryLoading());
+    final response = await _repo.getCardActivities(currentCard!.projectId,
+      currentCard!.id,);
+    response.when(
+      success: (data) {
+        activities = data.activities;
+        emit(GetHistorySuccess());
+      },
+      failure: (error) {
+        emit(GetHistoryError(NetworkExceptions.getErrorMessage(error)));
+      },
     );
   }
 
   // ------------------------------------------------------------------------------
 
   Future<void> uploadAttachment(String filePath) async {
-    emit(state.copyWith(status: TaskDetailsStatus.uploadingAttachment));
+    emit(UploadAttachmentLoading());
     final result = await _repo.uploadAttachment(
       projectId: currentCard!.projectId,
       cardId: currentCard!.id,
@@ -102,21 +91,17 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
 
     result.when(
       success: (data) {
-        _attachments.insert(0, data.attachment);
+        attachments.insert(0, data.attachment);
+        emit(UploadAttachmentSuccess());
       },
       failure: (error) {
-        emit(
-          state.copyWith(
-            status: TaskDetailsStatus.error,
-            errorMessage: NetworkExceptions.getErrorMessage(error),
-          ),
-        );
+        emit(UploadAttachmentError(NetworkExceptions.getErrorMessage(error)));
       },
     );
-    _emitLoaded();
   }
 
   Future<void> deleteAttachment(int attachmentId) async {
+    emit(DeleteAttachmentLoading());
     final result = await _repo.deleteAttachment(
       currentCard!.projectId,
       currentCard!.id,
@@ -125,61 +110,53 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
     result.when(
       success: (data) {
         if (data) {
-          _attachments.removeWhere((a) => a.id == attachmentId);
-          _emitLoaded();
+          attachments.removeWhere((a) => a.id == attachmentId);
+          emit(DeleteAttachmentSuccess());
         } else {
-          emit(
-            state.copyWith(status: TaskDetailsStatus.error, errorMessage: ""),
-          );
+          emit(const DeleteAttachmentError("Error"));
         }
       },
       failure: (error) {
-        emit(
-          state.copyWith(
-            status: TaskDetailsStatus.error,
-            errorMessage: NetworkExceptions.getErrorMessage(error),
-          ),
-        );
+        emit(DeleteAttachmentError(NetworkExceptions.getErrorMessage(error)));
       },
     );
   }
 
   // ------------------------------------------------------------------------------
-  Future<void> addComment(int projectId, int cardId, String content) async {
-    emit(state.copyWith(status: TaskDetailsStatus.addingComment));
-    final result = await _repo.addComment(projectId, cardId, content);
+  Future<void> addComment(String content) async {
+    emit(AddCommentLoading());
+    final result = await _repo.addComment(
+      currentCard!.projectId,
+      currentCard!.id,
+      content,
+    );
     result.when(
       success: (data) {
         if (data.comment != null) {
-          _comments.insert(0, data.comment!);
+          comments.insert(0, data.comment!);
+          emit(AddCommentSuccess());
         }
       },
       failure: (error) {
-        emit(
-          state.copyWith(
-            status: TaskDetailsStatus.error,
-            errorMessage: NetworkExceptions.getErrorMessage(error),
-          ),
-        );
+        emit(AddCommentError(NetworkExceptions.getErrorMessage(error)));
       },
     );
-    _emitLoaded();
   }
 
-  Future<void> deleteComment(int projectId, int cardId, int commentId) async {
-    final result = await _repo.deleteComment(projectId, cardId, commentId);
+  Future<void> deleteComment(int commentId) async {
+    emit(DeleteCommentLoading());
+    final result = await _repo.deleteComment(
+      currentCard!.projectId,
+      currentCard!.id,
+      commentId,
+    );
     result.when(
       success: (data) {
-        _comments.removeWhere((c) => c.id == commentId);
-        _emitLoaded();
+        comments.removeWhere((c) => c.id == commentId);
+        emit(DeleteCommentSuccess());
       },
       failure: (error) {
-        emit(
-          state.copyWith(
-            status: TaskDetailsStatus.error,
-            errorMessage: NetworkExceptions.getErrorMessage(error),
-          ),
-        );
+        emit(DeleteCommentError(NetworkExceptions.getErrorMessage(error)));
       },
     );
   }

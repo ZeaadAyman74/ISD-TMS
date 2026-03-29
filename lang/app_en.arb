@@ -11,7 +11,7 @@
   "welcome_title": "Welcome to TMS! 👋",
   "welcome_subtitle": "Please sign in to your account and start the adventure",
   "login": "Login",
-  "email_label": "Email or Extension Number",
+  "email_label": "Email",
   "email_hint": "Enter your email",
   "password_label": "Password",
   "password_hint": "Enter your password",

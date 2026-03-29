@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
+import 'package:isd_tms/src/core/widgets/custom_button.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/board_filter_header/type_filter/types_list.dart';
 
@@ -13,7 +14,6 @@ class TypeFilterBottomSheet extends StatelessWidget {
     final cubit = context.read<BoardCubit>();
     final types = cubit.cardTypes;
     final selectedTypeKeys = List<String>.from(cubit.selectedTypeKeys);
-
     return StatefulBuilder(
       builder: (context, setModalState) {
         return Container(
@@ -43,15 +43,12 @@ class TypeFilterBottomSheet extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.all(16.w),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 45.h),
-                  ),
-                  onPressed: () {
+                child: CustomButton(
+                  onTap: () {
                     cubit.updateFilters(typeKeys: selectedTypeKeys);
                     Navigator.pop(context);
                   },
-                  child: const Text('Apply'),
+                  title: "Apply",
                 ),
               ),
             ],

@@ -58,6 +58,21 @@ class BoardRepo {
     }
   }
 
+  Future<NetworkResult<void>> deleteCard({
+    required int projectId,
+    required int cardId,
+  }) async {
+    try {
+      await _service.deleteCard(
+        projectId,
+        cardId,
+      );
+      return const NetworkResult.success(null);
+    } catch (error) {
+      return NetworkResult.failure(NetworkExceptions.getDioException(error));
+    }
+  }
+
   Future<NetworkResult<List<LookupModel>>> getCardTypes() async {
     try {
       final response = await _service.getCardTypes();

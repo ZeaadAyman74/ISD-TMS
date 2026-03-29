@@ -44,8 +44,7 @@ class _TitleFieldState extends State<TitleField> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
-      buildWhen: (previous, current) =>
-          current.status == TaskDetailsStatus.updateCard,
+      buildWhen: (previous, current) => current is UpdateCard,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

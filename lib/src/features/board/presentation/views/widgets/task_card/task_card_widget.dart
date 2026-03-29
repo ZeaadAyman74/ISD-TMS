@@ -46,12 +46,63 @@ class TaskCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title
-            Text(
-              card.title,
-              style: context.appTextTheme.font14TextPrimarySemiBold,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            // Title & Actions
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    card.title,
+                    style: context.appTextTheme.font14TextPrimarySemiBold,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'delete') {
+                      showDialog(
+                        context: context,
+                        builder: (confirmContext) => AlertDialog(
+                          title: const Text('Delete Task'),
+                          content: const Text(
+                              'Are you sure you want to delete this task?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(confirmContext),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(confirmContext);
+                                context.read<BoardCubit>().deleteTask(card.id);
+                              },
+                              child: const Text('Delete',
+                                  style: TextStyle(color: AppColors.error)),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children: [
+                          Icon(Icons.delete_outline,
+                              color: AppColors.error, size: 20),
+                          SizedBox(width: 8),
+                          Text('Delete',
+                              style: TextStyle(color: AppColors.error)),
+                        ],
+                      ),
+                    ),
+                  ],
+                  child: Icon(Icons.more_vert,
+                      size: 20.r, color: context.appColors.textSecondary),
+                ),
+              ],
             ),
             SizedBox(height: 12.h),
             // Chips Row
