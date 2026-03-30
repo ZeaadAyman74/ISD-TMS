@@ -62,6 +62,7 @@ class AttachmentSection extends StatelessWidget {
             ),
             children: [
               BlocBuilder(
+                bloc: cubit,
                 buildWhen: (previous, current) =>
                     current is UploadAttachmentLoading ||
                     current is UploadAttachmentSuccess ||

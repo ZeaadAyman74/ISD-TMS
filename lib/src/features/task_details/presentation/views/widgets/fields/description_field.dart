@@ -59,8 +59,6 @@ class _DescriptionFieldState extends State<DescriptionField> {
               hint: "Add Description...",
               initialText: cubit.currentCard!.description,
               onChange: (val) {
-                print(val);
-                print(cubit.currentCard!.description);
                 final changed = (val != cubit.currentCard!.description);
                 if (_isChanged != changed) {
                   setState(() => _isChanged = changed);

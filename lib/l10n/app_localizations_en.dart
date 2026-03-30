@@ -137,4 +137,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get update => 'Update';
+
+  @override
+  String get updated_the_card => 'Updated the card';
+
+  @override
+  String get created_card => 'Created the card';
+
+  @override
+  String get uploaded_attachment => 'Uploaded an attachment';
+
+  @override
+  String get deleted_attachment => 'Deleted an attachment';
+
+  @override
+  String get change_the_assignee => 'Change the assignee';
+
+  @override
+  String get moved_the_card => 'Moved the card';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get priority => 'Priority';
+
+  @override
+  String get status => 'Status';
+
+  @override
+  String get attachments => 'Attachments';
 }

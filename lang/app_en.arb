@@ -48,5 +48,16 @@
   "created_at_prefix": "Created: ",
   "edit_task": "Edit Task",
   "title": "Title",
-  "update": "Update"
+  "update": "Update",
+  "updated_the_card": "Updated the card",
+  "created_card": "Created the card",
+  "uploaded_attachment": "Uploaded an attachment",
+  "deleted_attachment": "Deleted an attachment",
+  "change_the_assignee": "Change the assignee",
+  "moved_the_card": "Moved the card",
+  "type": "Type",
+  "priority": "Priority",
+  "status": "Status",
+  "attachments": "Attachments"
+
 }

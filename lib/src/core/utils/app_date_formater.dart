@@ -14,12 +14,14 @@ class AppDateFormatter {
     }
   }
 
-  static String textTFormat(String text, String dateFormat, [String? local]) {
+  static String? textTFormat(String? text, String dateFormat, [String? local]) {
     try {
+      if(text==null) return null;
+      final date=DateTime.parse(text);
       final DateFormat format = DateFormat(dateFormat, local);
-      return format.format(DateFormat("yyyy-MM-dd hh:mm").parse(text));
+      return format.format(date);
     } catch (_) {
-      return '';
+      return null;
     }
   }
 

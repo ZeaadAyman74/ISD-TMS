@@ -355,6 +355,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Update'**
   String get update;
+
+  /// No description provided for @updated_the_card.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated the card'**
+  String get updated_the_card;
+
+  /// No description provided for @created_card.
+  ///
+  /// In en, this message translates to:
+  /// **'Created the card'**
+  String get created_card;
+
+  /// No description provided for @uploaded_attachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploaded an attachment'**
+  String get uploaded_attachment;
+
+  /// No description provided for @deleted_attachment.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted an attachment'**
+  String get deleted_attachment;
+
+  /// No description provided for @change_the_assignee.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the assignee'**
+  String get change_the_assignee;
+
+  /// No description provided for @moved_the_card.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved the card'**
+  String get moved_the_card;
+
+  /// No description provided for @type.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
+
+  /// No description provided for @priority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get priority;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @attachments.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments'**
+  String get attachments;
 }
 
 class _AppLocalizationsDelegate

@@ -118,7 +118,6 @@ class BoardCubit extends Cubit<BoardState> {
     List<String>? priorities,
     List<String>? typeKeys,
   }) {
-    print(assigneeIds);
     if (search != null) searchQuery = search;
     if (assigneeIds != null) selectedAssigneeIds = assigneeIds;
     if (priorities != null) selectedPriorities = priorities;

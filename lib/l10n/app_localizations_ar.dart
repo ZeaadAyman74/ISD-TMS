@@ -136,4 +136,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get update => 'تحديث';
+
+  @override
+  String get updated_the_card => 'قام بتحديث المهمة';
+
+  @override
+  String get created_card => 'قام بإنشاء المهمة';
+
+  @override
+  String get uploaded_attachment => 'قام برفع مرفق';
+
+  @override
+  String get deleted_attachment => 'قام بحذف المرفق';
+
+  @override
+  String get change_the_assignee => 'قام بتغيير المسؤول';
+
+  @override
+  String get moved_the_card => 'قام بنقل المهمة';
+
+  @override
+  String get type => 'النوع';
+
+  @override
+  String get priority => 'الاولوية';
+
+  @override
+  String get status => 'الحالة';
+
+  @override
+  String get attachments => 'المرفقات';
 }

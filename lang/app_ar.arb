@@ -48,5 +48,15 @@
   "created_at_prefix": "تم الإنشاء: ",
   "edit_task": "تعديل المهمة",
   "title": "العنوان",
-  "update": "تحديث"
+  "update": "تحديث",
+  "updated_the_card": "قام بتحديث المهمة",
+  "created_card": "قام بإنشاء المهمة",
+  "uploaded_attachment": "قام برفع مرفق",
+  "deleted_attachment": "قام بحذف المرفق",
+  "change_the_assignee": "قام بتغيير المسؤول",
+  "moved_the_card": "قام بنقل المهمة",
+  "type": "النوع",
+  "priority": "الاولوية",
+  "status": "الحالة",
+  "attachments": "المرفقات"
 }

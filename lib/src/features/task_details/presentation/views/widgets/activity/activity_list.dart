@@ -10,9 +10,10 @@ class ActivityList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: activities.length,
-      padding: EdgeInsets.symmetric(vertical: 16.h),
+      separatorBuilder: (context, index) => 8.verticalSpace,
+      padding: EdgeInsets.only(top: 16.h,bottom: 200.h),
       itemBuilder: (context, index) {
         return ActivityCard(activity: activities[index]);
       },
