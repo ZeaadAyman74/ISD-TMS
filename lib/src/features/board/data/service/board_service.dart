@@ -17,14 +17,14 @@ abstract class BoardService {
     @Body() Map<String, dynamic> body,
   );
 
-  @PUT(EndPoints.cardDetail)
+  @PUT(EndPoints.updateCard)
   Future<HttpResponse<dynamic>> updateCard(
     @Path("projectId") int projectId,
     @Path("cardId") int cardId,
     @Body() Map<String, dynamic> data,
   );
 
-  @DELETE(EndPoints.cardDetail)
+  @DELETE(EndPoints.updateCard)
   Future<HttpResponse<dynamic>> deleteCard(
     @Path("projectId") int projectId,
     @Path("cardId") int cardId,

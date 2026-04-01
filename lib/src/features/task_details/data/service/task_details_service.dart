@@ -13,7 +13,7 @@ part 'task_details_service.g.dart';
 abstract class TaskDetailsService {
   factory TaskDetailsService(Dio dio, {String baseUrl}) = _TaskDetailsService;
 
-  @PUT(EndPoints.cardDetail)
+  @PUT(EndPoints.updateCard)
   Future<HttpResponse<dynamic>> updateTask(
     @Path("projectId") int projectId,
     @Path("cardId") int cardId,
@@ -40,7 +40,7 @@ abstract class TaskDetailsService {
     @Part(name: "file") MultipartFile file,
   );
 
-  @DELETE(EndPoints.cardAttachmentDetail)
+  @DELETE(EndPoints.deleteAttachment)
   Future<HttpResponse<dynamic>> deleteAttachment(
     @Path("projectId") int projectId,
     @Path("cardId") int cardId,
@@ -60,7 +60,7 @@ abstract class TaskDetailsService {
     @Body() Map<String, dynamic> body,
   );
 
-  @DELETE(EndPoints.cardCommentDetail)
+  @DELETE(EndPoints.deleteComment)
   Future<HttpResponse<dynamic>> deleteComment(
     @Path("projectId") int projectId,
     @Path("cardId") int cardId,

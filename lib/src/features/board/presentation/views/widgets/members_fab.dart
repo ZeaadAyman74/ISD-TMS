@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:isd_tms/src/core/router/router.main.dart';
-import 'package:isd_tms/src/features/board/data/models/members_screen_args.dart';
+import 'package:isd_tms/src/features/board/data/models/memebers/members_screen_args.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 
 class MembersFab extends StatelessWidget {
