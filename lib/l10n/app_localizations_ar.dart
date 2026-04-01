@@ -166,4 +166,105 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get attachments => 'المرفقات';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get save => 'حفظ';
+
+  @override
+  String get upload => 'تحميل';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String get no_notifications => 'لا يوجد إشعارات بعد';
+
+  @override
+  String get are_you_sure_delete_task => 'هل أنت متأكد من حذف هذه المهمة؟';
+
+  @override
+  String get task_deleted_success => 'تم حذف المهمة بنجاح';
+
+  @override
+  String get delete_task => 'حذف المهمة';
+
+  @override
+  String get delete => 'حذف';
+
+  @override
+  String comments_tab(int count) {
+    return 'التعليقات ($count)';
+  }
+
+  @override
+  String get history_tab => 'السجل';
+
+  @override
+  String get comments => 'التعليقات';
+
+  @override
+  String get add_comment_hint => 'إضافة تعليق...';
+
+  @override
+  String get search_cards_hint => 'البحث في البطاقات...';
+
+  @override
+  String get add_description_hint => 'إضافة وصف...';
+
+  @override
+  String get assign_members => 'تعيين أعضاء';
+
+  @override
+  String get assigned_label => 'تم التعيين';
+
+  @override
+  String get not_set => 'غير محدد';
+
+  @override
+  String get notification_moved => 'نقل';
+
+  @override
+  String get notification_mention => 'إشارة';
+
+  @override
+  String get notification_assigned => 'تعيين';
+
+  @override
+  String get notification_comment => 'تعليق';
+
+  @override
+  String get notification_project_owner => 'مالك المشروع';
+
+  @override
+  String get notification_member_added => 'إضافة عضو';
+
+  @override
+  String get notification_default => 'إشعار';
+
+  @override
+  String get admin_user => 'المدير';
+
+  @override
+  String get ok => 'موافق';
+
+  @override
+  String get arabic => 'العربية';
+
+  @override
+  String get english => 'الإنجليزية';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get projects_management => 'Projects Management';
+
+  @override
+  String get you => 'انت';
 }

@@ -1,4 +1,5 @@
 import 'package:hive_ce/hive.dart';
+import 'package:isd_tms/src/features/auth/data/models/role_model.dart';
 
 part 'user_model.g.dart';
 
@@ -12,6 +13,9 @@ class UserModel extends HiveObject {
     required this.email,
     this.isActive = 1,
     this.photoUrl,
+    this.photoThumbMdUrl,
+    this.photoThumbXsUrl,
+    this.roles = const [],
   });
 
   @HiveField(0)
@@ -35,7 +39,16 @@ class UserModel extends HiveObject {
   @HiveField(6)
   final String? photoUrl;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  @HiveField(7)
+  final String? photoThumbMdUrl;
+
+  @HiveField(8)
+  final String? photoThumbXsUrl;
+
+  @HiveField(9)
+  final List<RoleModel> roles;
+
+  factory UserModel.fromJson(Map<String, dynamic> json, {List<RoleModel> roles = const []}) {
     return UserModel(
       id: json['id'] ?? 0,
       firstName: json['first_name'] ?? '',
@@ -44,6 +57,9 @@ class UserModel extends HiveObject {
       email: json['email'] ?? '',
       isActive: json['is_active'] ?? 1,
       photoUrl: json['photo_url'],
+      photoThumbMdUrl: json['photo_thumb_md_url'],
+      photoThumbXsUrl: json['photo_thumb_xs_url'],
+      roles: roles,
     );
   }
 
@@ -55,5 +71,9 @@ class UserModel extends HiveObject {
         'email': email,
         'is_active': isActive,
         'photo_url': photoUrl,
+        'photo_thumb_md_url': photoThumbMdUrl,
+        'photo_thumb_xs_url': photoThumbXsUrl,
+        'roles': roles.map((e) => e.toJson()).toList(),
       };
 }
+

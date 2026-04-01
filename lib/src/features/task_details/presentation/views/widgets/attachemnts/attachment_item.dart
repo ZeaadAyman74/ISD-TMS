@@ -8,10 +8,12 @@ class AttachmentItem extends StatelessWidget {
     super.key,
     required this.attachment,
     required this.onDelete,
+    this.canDelete=true,
   });
 
   final dynamic attachment;
   final VoidCallback onDelete;
+  final bool canDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +74,7 @@ class AttachmentItem extends StatelessWidget {
           //   },
           //   icon: const Icon(Icons.download_outlined, size: 18),
           // ),
+          if(canDelete)
           IconButton(
             onPressed: onDelete,
             icon: const Icon(

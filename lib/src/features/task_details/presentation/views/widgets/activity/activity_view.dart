@@ -18,7 +18,9 @@ class _ActivityViewState extends State<ActivityView>with AutomaticKeepAliveClien
   @override
   void initState() {
     super.initState();
-    cubit.getHistory();
+    if(cubit.currentProject!.permissions?.activities?.show??false){
+      cubit.getHistory();
+    }
   }
   @override
   Widget build(BuildContext context) {

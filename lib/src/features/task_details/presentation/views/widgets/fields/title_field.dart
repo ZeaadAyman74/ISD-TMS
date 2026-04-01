@@ -53,6 +53,7 @@ class _TitleFieldState extends State<TitleField> {
             CustomFormField(
               labelText: 'Title',
               controller: _controller,
+              isEnable: cubit.currentProject!.permissions?.cards?.edit ??false,
               hintText: 'Task Title',
               onChanged: (val) {
                 final changed =

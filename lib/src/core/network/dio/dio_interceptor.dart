@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:isd_tms/src/core/helpers/hive/hive_utils.dart';
+import 'package:isd_tms/src/core/helpers/shared_pref/shared_pref_utils.dart';
 import 'package:isd_tms/src/core/network/constants/api_constants.dart';
 import 'package:isd_tms/src/core/router/router.main.dart';
 
@@ -15,6 +16,7 @@ class DioInterceptor extends Interceptor {
     }
     options.headers[ApiConstants.accept] = ApiConstants.applicationJson;
     options.headers[ApiConstants.contentType] = ApiConstants.applicationJson;
+    options.queryParameters['lang']=SharedPrefUtils.locale;
     super.onRequest(options, handler);
   }
 

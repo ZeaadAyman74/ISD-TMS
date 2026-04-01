@@ -32,8 +32,8 @@ class CommentsHistoryTabBar extends StatelessWidget {
             unselectedLabelColor: AppColors.textSecondary,
             labelStyle: context.appTextTheme.font14TextPrimarySemiBold,
             tabs: [
-              Tab(text: 'Comments (${cubit.comments.length})'),
-              const Tab(text: 'History'),
+              Tab(text: context.localization.comments_tab(cubit.comments.length)),
+              Tab(text: context.localization.history_tab),
             ],
           );
         },

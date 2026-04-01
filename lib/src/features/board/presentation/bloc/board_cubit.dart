@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_details_models.dart';
 import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
 import 'package:isd_tms/src/core/network/result/network_result.dart';
@@ -13,27 +14,31 @@ class BoardCubit extends Cubit<BoardState> {
   BoardCubit(this._repo) : super(const BoardInitial());
   final BoardRepo _repo;
 
+  // ----------------------------------------------------
+
+  ProjectModel? currentProject;
+  void setCurrentProject(ProjectModel project){
+    currentProject=project;
+  }
+  //------------------------------------------------------
   List<BoardListModel> lists = [];
   List<CardModel> cards = [];
   List<LabelModel> labels = [];
   List<BoardMember> members = [];
   List<LookupModel> cardTypes = [];
   List<LookupModel> cardPriorities = [];
-  int? currentProjectId;
-  String? currentProjectName;
+
 
   String searchQuery = '';
   List<int> selectedAssigneeIds = [];
   List<String> selectedPriorities = [];
   List<String> selectedTypeKeys = [];
 
-  Future<void> getBoard(int projectId, {String? projectName}) async {
-    currentProjectId = projectId;
-    currentProjectName ??= projectName;
+  Future<void> getBoard() async {
     emit(const BoardLoading());
 
     final results = await Future.wait([
-      _repo.getProjectBoard(projectId),
+      _repo.getProjectBoard(currentProject!.id),
       _repo.getCardTypes(),
       _repo.getCardPriorities(),
     ]);
@@ -139,14 +144,14 @@ class BoardCubit extends Cubit<BoardState> {
     required String title,
     required int listId,
   }) async {
-    if (currentProjectId == null) return;
+    if (currentProject == null) return;
 
     final cardsInList = getCardsForList(listId);
     final position = cardsInList.length;
 
     emit(const AddCardLoading());
     final result = await _repo.createCard(
-      projectId: currentProjectId!,
+      projectId: currentProject!.id,
       title: title,
       listId: listId,
       position: position,
@@ -169,11 +174,11 @@ class BoardCubit extends Cubit<BoardState> {
     required int cardId,
     required UpdateTaskModel data,
   }) async {
-    if (currentProjectId == null) return;
+    if (currentProject == null) return;
 
     emit(const UpdateTaskLoading());
     final result = await _repo.updateCard(
-      projectId: currentProjectId!,
+      projectId: currentProject!.id,
       cardId: cardId,
       data: data.toJson(),
     );
@@ -222,11 +227,11 @@ class BoardCubit extends Cubit<BoardState> {
   }
 
   Future<void> deleteTask(int cardId) async {
-    if (currentProjectId == null) return;
+    if (currentProject == null) return;
 
     emit(const DeleteTaskLoading());
     final result = await _repo.deleteCard(
-      projectId: currentProjectId!,
+      projectId: currentProject!.id,
       cardId: cardId,
     );
 

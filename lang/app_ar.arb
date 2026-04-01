@@ -58,5 +58,50 @@
   "type": "النوع",
   "priority": "الاولوية",
   "status": "الحالة",
-  "attachments": "المرفقات"
+  "attachments": "المرفقات",
+  "retry": "إعادة المحاولة",
+  "save": "حفظ",
+  "upload": "تحميل",
+  "notifications": "الإشعارات",
+  "no_notifications": "لا يوجد إشعارات بعد",
+  "are_you_sure_delete_task": "هل أنت متأكد من حذف هذه المهمة؟",
+  "task_deleted_success": "تم حذف المهمة بنجاح",
+  "delete_task": "حذف المهمة",
+  "delete": "حذف",
+  "comments_tab": "التعليقات ({count})",
+  "@comments_tab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "history_tab": "السجل",
+  "comments": "التعليقات",
+  "add_comment_hint": "إضافة تعليق...",
+  "search_cards_hint": "البحث في البطاقات...",
+  "add_description_hint": "إضافة وصف...",
+  "assign_members": "تعيين أعضاء",
+  "assigned_label": "تم التعيين",
+  "not_set": "غير محدد",
+  "notification_moved": "نقل",
+  "notification_mention": "إشارة",
+  "notification_assigned": "تعيين",
+  "notification_comment": "تعليق",
+  "notification_project_owner": "مالك المشروع",
+  "notification_member_added": "إضافة عضو",
+  "notification_default": "إشعار",
+  "admin_user": "المدير",
+  "ok": "موافق",
+  "arabic": "العربية",
+  "english": "الإنجليزية",
+  "profile": "الملف الشخصي",
+  "language": "اللغة",
+  "projects_management": "Projects Management",
+  "you": "انت"
+
 }
+
+
+
+

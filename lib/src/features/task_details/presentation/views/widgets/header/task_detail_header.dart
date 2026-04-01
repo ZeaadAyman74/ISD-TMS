@@ -14,10 +14,11 @@ class TaskDetailHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit=context.read<TaskDetailsCubit>();
     return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
       buildWhen: (previous, current) => current is UpdateCard,
       builder: (context, state) {
-        final card=context.read<TaskDetailsCubit>().currentCard;
+        final card = cubit.currentCard;
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           decoration: BoxDecoration(
@@ -53,28 +54,29 @@ class TaskDetailHeader extends StatelessWidget {
                       ],
                     ),
                   ),
+                  if(cubit.currentProject!.permissions?.cards?.delete??false)
                   IconButton(
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (confirmContext) => AlertDialog(
-                          title: const Text('Delete Task'),
-                          content: const Text(
-                              'Are you sure you want to delete this task?'),
+                          title: Text(context.localization.delete_task),
+                          content: Text(
+                            context.localization.are_you_sure_delete_task,
+                          ),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(confirmContext),
-                              child: const Text('Cancel'),
+                              child: Text(context.localization.cancel),
                             ),
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(confirmContext);
                                 context.read<BoardCubit>().deleteTask(card.id);
                               },
-                              child: const Text(
-                                'Delete',
-                                style:
-                                    TextStyle(color: AppColors.error),
+                              child: Text(
+                                context.localization.delete,
+                                style: const TextStyle(color: AppColors.error),
                               ),
                             ),
                           ],
@@ -95,7 +97,7 @@ class TaskDetailHeader extends StatelessWidget {
                 ],
               ),
               12.verticalSpace,
-              StatusDropdown(card: card),
+              const StatusDropdown(),
             ],
           ),
         );

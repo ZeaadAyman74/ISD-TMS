@@ -415,6 +415,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Attachments'**
   String get attachments;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @upload.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get upload;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @no_notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get no_notifications;
+
+  /// No description provided for @are_you_sure_delete_task.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this task?'**
+  String get are_you_sure_delete_task;
+
+  /// No description provided for @task_deleted_success.
+  ///
+  /// In en, this message translates to:
+  /// **'Task deleted successfully'**
+  String get task_deleted_success;
+
+  /// No description provided for @delete_task.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Task'**
+  String get delete_task;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @comments_tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments ({count})'**
+  String comments_tab(int count);
+
+  /// No description provided for @history_tab.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get history_tab;
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @add_comment_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Comment...'**
+  String get add_comment_hint;
+
+  /// No description provided for @search_cards_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search cards...'**
+  String get search_cards_hint;
+
+  /// No description provided for @add_description_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Description...'**
+  String get add_description_hint;
+
+  /// No description provided for @assign_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Members'**
+  String get assign_members;
+
+  /// No description provided for @assigned_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned'**
+  String get assigned_label;
+
+  /// No description provided for @not_set.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Set'**
+  String get not_set;
+
+  /// No description provided for @notification_moved.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved'**
+  String get notification_moved;
+
+  /// No description provided for @notification_mention.
+  ///
+  /// In en, this message translates to:
+  /// **'Mention'**
+  String get notification_mention;
+
+  /// No description provided for @notification_assigned.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned'**
+  String get notification_assigned;
+
+  /// No description provided for @notification_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get notification_comment;
+
+  /// No description provided for @notification_project_owner.
+  ///
+  /// In en, this message translates to:
+  /// **'Project Owner'**
+  String get notification_project_owner;
+
+  /// No description provided for @notification_member_added.
+  ///
+  /// In en, this message translates to:
+  /// **'Member Added'**
+  String get notification_member_added;
+
+  /// No description provided for @notification_default.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get notification_default;
+
+  /// No description provided for @admin_user.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin User'**
+  String get admin_user;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'Ok'**
+  String get ok;
+
+  /// No description provided for @arabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get arabic;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @projects_management.
+  ///
+  /// In en, this message translates to:
+  /// **'Projects Management'**
+  String get projects_management;
+
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
 }
 
 class _AppLocalizationsDelegate

@@ -24,6 +24,11 @@ import 'package:isd_tms/src/features/task_details/data/service/task_details_serv
 import 'package:isd_tms/src/features/task_details/data/repo/task_details_repo.dart';
 import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 
+// Notifications
+import 'package:isd_tms/src/features/notifications/data/service/notifications_service.dart';
+import 'package:isd_tms/src/features/notifications/data/repo/notifications_repo.dart';
+import 'package:isd_tms/src/features/notifications/presentation/bloc/notifications_cubit.dart';
+
 final getIt = GetIt.instance;
 
 class DependencyInjection {
@@ -58,5 +63,11 @@ class DependencyInjection {
     getIt.registerLazySingleton(() => TaskDetailsService(getIt<Dio>()));
     getIt.registerLazySingleton(() => TaskDetailsRepo(getIt<TaskDetailsService>()));
     getIt.registerFactory(() => TaskDetailsCubit(getIt<TaskDetailsRepo>()));
+
+    // --- Notifications ---
+    getIt.registerLazySingleton(() => NotificationsService(getIt<Dio>()));
+    getIt.registerLazySingleton(() => NotificationsRepo(getIt<NotificationsService>()));
+    getIt.registerFactory(() => NotificationsCubit(getIt<NotificationsRepo>()));
   }
 }
+

@@ -25,4 +25,10 @@ class EndPoints {
   static const cardTypes = '/api/lookups/card-types';
   static const cardPriorities = '/api/lookups/card-priorities';
   static const workflowStatuses = '/api/lookups/workflow-statuses';
+
+  // Notifications
+  static const notifications = '/api/notifications';
+
+  static const getAllProjects='/api/projects';
+  //page=1&itemsPerPage=10&orderBy=created_at&orderDirection=DESC&is_active=1&search_text=&lang=en
 }

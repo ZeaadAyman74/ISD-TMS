@@ -1,5 +1,6 @@
 import 'package:isd_tms/src/features/projects/data/models/project_member_model.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_owner_model.dart';
+import 'package:isd_tms/src/features/projects/data/models/project_permissions_model.dart';
 
 class ProjectModel {
   const ProjectModel({
@@ -36,7 +37,7 @@ class ProjectModel {
   final ProjectOwner? owner;
   final List<ProjectMember>? members;
   final ProjectMember? currentMember;
-  final Map<String, Map<String, bool>>? permissions;
+  final ProjectPermissionsModel? permissions;
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
     return ProjectModel(
@@ -63,18 +64,9 @@ class ProjectModel {
               json['current_member'] as Map<String, dynamic>,
             )
           : null,
-      permissions: _parsePermissions(json['permissions']),
+      permissions: json['permissions'] != null
+          ? ProjectPermissionsModel.fromJson(json['permissions'])
+          : null,
     );
-  }
-
-  static Map<String, Map<String, bool>>? _parsePermissions(dynamic json) {
-    if (json == null || json is! Map<String, dynamic>) return null;
-    final Map<String, Map<String, bool>> permissions = {};
-    json.forEach((key, value) {
-      if (value is Map<String, dynamic>) {
-        permissions[key] = value.map((k, v) => MapEntry(k, v as bool));
-      }
-    });
-    return permissions;
   }
 }

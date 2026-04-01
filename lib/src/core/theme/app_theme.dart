@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:isd_tms/gen/fonts.gen.dart';
 import 'package:isd_tms/src/core/extensions/theme_colors_extensions.dart';
 import 'package:isd_tms/src/core/extensions/theme_text_extensions.dart';
 import 'package:isd_tms/src/core/theme/app_colors.dart';
@@ -17,7 +18,7 @@ class AppTheme {
       surface: AppColors.cardBackground,
       brightness: Brightness.light,
     ),
-    fontFamily: 'Public Sans',
+    fontFamily: FontFamily.publicSans,
     textTheme: const TextTheme(
       displayLarge: TextStyle(
         color: AppColors.textPrimary,
@@ -169,7 +170,7 @@ class AppTheme {
           surface: const Color(0xFF1E293B),
           brightness: Brightness.dark,
         ),
-        fontFamily: 'Public Sans',
+        fontFamily: FontFamily.publicSans,
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF0F172A),
           elevation: 0,

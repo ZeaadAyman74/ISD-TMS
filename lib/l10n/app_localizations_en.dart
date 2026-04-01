@@ -167,4 +167,106 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get attachments => 'Attachments';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get upload => 'Upload';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get no_notifications => 'No notifications yet';
+
+  @override
+  String get are_you_sure_delete_task =>
+      'Are you sure you want to delete this task?';
+
+  @override
+  String get task_deleted_success => 'Task deleted successfully';
+
+  @override
+  String get delete_task => 'Delete Task';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String comments_tab(int count) {
+    return 'Comments ($count)';
+  }
+
+  @override
+  String get history_tab => 'History';
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get add_comment_hint => 'Add Comment...';
+
+  @override
+  String get search_cards_hint => 'Search cards...';
+
+  @override
+  String get add_description_hint => 'Add Description...';
+
+  @override
+  String get assign_members => 'Assign Members';
+
+  @override
+  String get assigned_label => 'Assigned';
+
+  @override
+  String get not_set => 'Not Set';
+
+  @override
+  String get notification_moved => 'Moved';
+
+  @override
+  String get notification_mention => 'Mention';
+
+  @override
+  String get notification_assigned => 'Assigned';
+
+  @override
+  String get notification_comment => 'Comment';
+
+  @override
+  String get notification_project_owner => 'Project Owner';
+
+  @override
+  String get notification_member_added => 'Member Added';
+
+  @override
+  String get notification_default => 'Notification';
+
+  @override
+  String get admin_user => 'Admin User';
+
+  @override
+  String get ok => 'Ok';
+
+  @override
+  String get arabic => 'Arabic';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get projects_management => 'Projects Management';
+
+  @override
+  String get you => 'You';
 }

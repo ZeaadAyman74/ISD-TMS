@@ -1,5 +1,7 @@
 import 'package:hive_ce/hive.dart';
 import 'package:isd_tms/src/core/helpers/hive/hive_keys.dart';
+import 'package:isd_tms/src/features/auth/data/models/permission_model.dart';
+import 'package:isd_tms/src/features/auth/data/models/role_model.dart';
 import 'package:isd_tms/src/features/auth/data/models/user_model.dart';
 
 class HiveUtils {
@@ -12,6 +14,15 @@ class HiveUtils {
 
   static UserModel? get user =>
       Hive.box<UserModel>(HiveKeys.userBox).get(HiveKeys.userKey);
+
+  static List<RoleModel> get roles => user?.roles ?? [];
+
+  static List<PermissionModel> get permissions =>
+      roles.expand((e) => e.permissions).toList();
+
+  static bool hasPermission(String permissionName) {
+    return permissions.any((e) => e.name == permissionName);
+  }
 
   static bool get isUserLoggedIn => user != null && token != null;
 
@@ -38,3 +49,4 @@ class HiveUtils {
     await deleteUser();
   }
 }
+

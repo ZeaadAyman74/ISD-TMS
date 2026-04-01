@@ -21,25 +21,29 @@ class ProjectsScreen extends StatelessWidget {
             Icon(Icons.task_alt_rounded, color: AppColors.primary, size: 28.r),
             SizedBox(width: 8.w),
             Text(
-              'TMS',
+              context.localization.app_title,
               style: context.appTextTheme.font20TextPrimaryBold,
             ),
           ],
         ),
         actions: [
-          // User avatar / name
-          if (HiveUtils.user != null)
-            Padding(
-              padding: EdgeInsets.only(right: 8.w),
-              child: Center(
-                child: Text(
-                  HiveUtils.user!.fullName,
-                  style: context.appTextTheme.font14TextSecondaryRegular,
-                ),
-              ),
+          // Notifications icon
+          IconButton(
+            icon: Icon(
+              Icons.notifications_none_rounded,
+              color: AppColors.textPrimary,
+              size: 24.r,
             ),
-          PopupMenuButton<String>(
-            icon: CircleAvatar(
+            onPressed: () {
+              context.push(Routes.notifications);
+            },
+          ),
+          // User avatar to push to Profile screen
+          GestureDetector(
+            onTap: () {
+              context.push(Routes.profile);
+            },
+            child: CircleAvatar(
               backgroundColor: AppColors.primary,
               radius: 16.r,
               child: Text(
@@ -52,30 +56,6 @@ class ProjectsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            onSelected: (value) async {
-              if (value == 'logout') {
-                await HiveUtils.resetUserCache();
-                if (context.mounted) {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    Routes.login,
-                    (route) => false,
-                  );
-                }
-              }
-            },
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 'logout',
-                child: Row(
-                  children: [
-                    const Icon(Icons.logout, color: AppColors.error, size: 20),
-                   8.horizontalSpace,
-                    Text(context.localization.logout),
-                  ],
-                ),
-              ),
-            ],
           ),
           SizedBox(width: 8.w),
         ],
@@ -84,3 +64,4 @@ class ProjectsScreen extends StatelessWidget {
     );
   }
 }
+

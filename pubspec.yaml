@@ -63,6 +63,7 @@ dependencies:
   retrofit_generator: ^10.2.3
   quick_log: ^5.5.3
   file_picker: ^9.0.0
+  infinite_scroll_pagination: ^5.1.1
 
 dev_dependencies:
   flutter_test:

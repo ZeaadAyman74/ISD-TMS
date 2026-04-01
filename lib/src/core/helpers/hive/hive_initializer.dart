@@ -1,5 +1,7 @@
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:isd_tms/src/core/helpers/hive/hive_keys.dart';
+import 'package:isd_tms/src/features/auth/data/models/permission_model.dart';
+import 'package:isd_tms/src/features/auth/data/models/role_model.dart';
 import 'package:isd_tms/src/features/auth/data/models/user_model.dart';
 
 class HiveInitializer {
@@ -8,9 +10,12 @@ class HiveInitializer {
 
     // Register Adapters
     Hive.registerAdapter(UserModelAdapter());
+    Hive.registerAdapter(RoleModelAdapter());
+    Hive.registerAdapter(PermissionModelAdapter());
 
     // Open boxes
     await Hive.openBox<UserModel>(HiveKeys.userBox);
     await Hive.openBox<dynamic>(HiveKeys.settingsBox);
   }
 }
+

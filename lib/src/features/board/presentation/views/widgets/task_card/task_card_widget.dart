@@ -12,13 +12,14 @@ import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 
 class TaskCardWidget extends StatelessWidget {
-  const TaskCardWidget({super.key, required this.card, required this.projectId});
+  const TaskCardWidget({super.key, required this.card,this.canDelete=true});
 
   final CardModel card;
-  final int projectId;
+  final bool canDelete;
 
   @override
   Widget build(BuildContext context) {
+    final cubit=context.read<BoardCubit>();
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -26,6 +27,7 @@ class TaskCardWidget extends StatelessWidget {
           Routes.taskDetail,
           arguments: TaskDetailArgs(
             card: card,
+            project: cubit.currentProject!,
             boardCubit: context.read<BoardCubit>(),
           ),
         );
@@ -58,6 +60,7 @@ class TaskCardWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                if(canDelete)
                 PopupMenuButton<String>(
                   onSelected: (value) {
                     if (value == 'delete') {

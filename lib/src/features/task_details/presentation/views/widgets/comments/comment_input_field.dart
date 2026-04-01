@@ -44,13 +44,13 @@ class _CommentInputFieldState extends State<CommentInputField> {
         children: [
           AppHtmlField(
             controller: controller,
-            hint: "Add Comment...",
+            hint: context.localization.add_comment_hint,
             initialText:'',
           ),
           Row(
             children: [
               const Spacer(),
-              SaveFieldButton(title: "Comment",onPressed: () {
+              SaveFieldButton(title: context.localization.comments,onPressed: () {
                 _onSave();
               }),
             ],

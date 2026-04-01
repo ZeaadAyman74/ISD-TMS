@@ -3,16 +3,22 @@
 // Check in to version control
 
 import 'package:hive_ce/hive_ce.dart';
+import 'package:isd_tms/src/features/auth/data/models/permission_model.dart';
+import 'package:isd_tms/src/features/auth/data/models/role_model.dart';
 import 'package:isd_tms/src/features/auth/data/models/user_model.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(PermissionModelAdapter());
+    registerAdapter(RoleModelAdapter());
     registerAdapter(UserModelAdapter());
   }
 }
 
 extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
+    registerAdapter(PermissionModelAdapter());
+    registerAdapter(RoleModelAdapter());
     registerAdapter(UserModelAdapter());
   }
 }

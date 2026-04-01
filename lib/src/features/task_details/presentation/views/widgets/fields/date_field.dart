@@ -27,9 +27,12 @@ class _DateFieldState extends State<DateField> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomFieldLabel(label: 'Due Date'),
+            CustomFieldLabel(label: context.localization.due_date),
             InkWell(
               onTap: () async {
+                if(!(cubit.currentProject!.permissions?.cards?.setDates??false)) {
+                  return ;
+                }
                 final date = await showDatePicker(
                   context: context,
                   initialDate:
@@ -55,7 +58,7 @@ class _DateFieldState extends State<DateField> {
                 child: Row(
                   children: [
                     Text(
-                      cubit.currentCard!.dueDate?.split('T').first ?? 'Not Set',
+                      cubit.currentCard!.dueDate?.split('T').first ?? context.localization.not_set,
                       style: context.appTextTheme.font14TextPrimarySemiBold,
                     ),
                     const Spacer(),

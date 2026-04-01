@@ -10,15 +10,33 @@ class MembersFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        final cubit = context.read<BoardCubit>();
-        context.push(Routes.members, args: MembersScreenArgs(
-            members: cubit.members,
-            projectName: cubit.currentProjectName ?? ''));
+    final cubit = context.read<BoardCubit>();
+    return BlocBuilder(
+      bloc: cubit,
+      buildWhen: (prev, curr) =>
+          curr is BoardLoading || curr is BoardLoaded || curr is BoardError,
+      builder: (context, state) {
+        if (state is BoardLoading ||
+            state is BoardError ||
+            !(cubit.currentProject?.permissions?.projectMembers?.show ??
+                false)) {
+          return const SizedBox.shrink();
+        }
+        return FloatingActionButton(
+          onPressed: () {
+            final cubit = context.read<BoardCubit>();
+            context.push(
+              Routes.members,
+              args: MembersScreenArgs(
+                members: cubit.members,
+                projectName: cubit.currentProject?.name ?? '',
+              ),
+            );
+          },
+          backgroundColor: context.appColors.primary,
+          child: const Icon(Icons.people_outline, color: Colors.white),
+        );
       },
-      backgroundColor: context.appColors.primary,
-      child: const Icon(Icons.people_outline, color: Colors.white),
     );
   }
 }

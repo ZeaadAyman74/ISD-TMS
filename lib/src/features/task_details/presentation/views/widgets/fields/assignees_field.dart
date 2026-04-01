@@ -22,7 +22,7 @@ class AssigneesField extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomFieldLabel(label:  'Assigned'),
+            CustomFieldLabel(label:  context.localization.assigned_label),
             Wrap(
               spacing: -8.w,
               runSpacing: 4.h,

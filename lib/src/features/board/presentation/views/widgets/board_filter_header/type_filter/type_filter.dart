@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/board_filter_header/filter_button.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/board_filter_header/type_filter/type_filter_bottom_sheet.dart';
@@ -10,7 +11,7 @@ class TypeFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilterButton(
-      label: 'Type',
+      label: context.localization.type,
       icon: Icons.label_outline,
       onTap: () => _showTypeFilter(context),
     );

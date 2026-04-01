@@ -11,11 +11,13 @@ class AppHtmlField extends StatelessWidget {
     this.hint,
     this.initialText,
     this.onChange,
+    this.isEnabled=true,
   });
   final QuillEditorController controller;
   final String? initialText;
   final String? hint;
  final dynamic Function(String value)? onChange;
+ final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class AppHtmlField extends StatelessWidget {
             text: initialText,
             hintText: hint,
             controller: controller,
-            isEnabled: true,
+            isEnabled: isEnabled,
             minHeight: 180,
             textStyle:context.appTextTheme.font14TextPrimaryRegular,
             hintTextStyle: TextStyle(

@@ -48,7 +48,7 @@ class _BoardBodyState extends State<BoardBody> with SingleTickerProviderStateMix
             return ErrorStateWidget(
               message: state.error,
               onRetry: () =>
-                  context.read<BoardCubit>().getBoard(widget.projectId),
+                  context.read<BoardCubit>().getBoard(),
             );
           }
           if (state is BoardLoaded) {

@@ -14,14 +14,16 @@ class CommentsView extends StatefulWidget {
 }
 
 class _CommentsViewState extends State<CommentsView>with AutomaticKeepAliveClientMixin{
+  TaskDetailsCubit get cubit => context.read<TaskDetailsCubit>();
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final cubit = context.read<TaskDetailsCubit>();
     return Column(
       children: [
+        if(cubit.currentProject!.permissions?.cardComments?.add??false)
         const CommentInputField(),
-        Expanded(
+        if(cubit.currentProject!.permissions?.cardComments?.show??false)
+          Expanded(
           child: BlocBuilder(
             bloc: cubit,
             buildWhen: (previous, current) =>

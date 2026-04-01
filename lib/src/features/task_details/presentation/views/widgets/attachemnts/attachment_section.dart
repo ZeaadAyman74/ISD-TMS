@@ -37,7 +37,7 @@ class AttachmentSection extends StatelessWidget {
             title: Row(
               children: [
                 Text(
-                  'Attachments',
+                  context.localization.attachments,
                   style: context.appTextTheme.font14TextPrimarySemiBold
                       .copyWith(fontWeight: FontWeight.w600),
                 ),
@@ -45,13 +45,13 @@ class AttachmentSection extends StatelessWidget {
                 _CountChip(count: cubit.attachments.length),
               ],
             ),
-            trailing: Row(
+            trailing:(cubit.currentProject!.permissions?.cardAttachments?.add ??false)? Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextButton.icon(
                   onPressed: () => _pickAndUpload(context),
                   icon: const Icon(Icons.upload, size: 16),
-                  label: const Text('Upload'),
+                  label: Text(context.localization.upload),
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     minimumSize: Size.zero,
@@ -59,7 +59,7 @@ class AttachmentSection extends StatelessWidget {
                 ),
                 Icon(Icons.keyboard_arrow_down, size: 24.sp),
               ],
-            ),
+            ):null,
             children: [
               BlocBuilder(
                 bloc: cubit,
@@ -79,6 +79,7 @@ class AttachmentSection extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: AttachmentItem(
                     attachment: a,
+                    canDelete: cubit.currentProject?.permissions?.cardAttachments?.delete??false,
                     onDelete: () =>
                         context.read<TaskDetailsCubit>().deleteAttachment(a.id),
                   ),

@@ -76,9 +76,9 @@ extension BuildContextExtension on BuildContext {
                 onPressed: () {
                   context.pop();
                 },
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(
+                child: Text(
+                  context.localization.cancel,
+                  style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600),
                 ),
@@ -114,8 +114,8 @@ extension BuildContextExtension on BuildContext {
           actions: [
             CupertinoDialogAction(
               isDestructiveAction: true,
-              child: const Text("Cancel",
-                  style: TextStyle(
+              child: Text(context.localization.cancel,
+                  style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600)),
               onPressed: () => context.pop(),
@@ -164,9 +164,9 @@ extension BuildContextExtension on BuildContext {
                 onPressed: () {
                   context.pop();
                 },
-                child: const Text(
-                  'Ok',
-                  style: TextStyle(
+                child: Text(
+                  context.localization.ok,
+                  style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600),
                 ),
@@ -187,8 +187,8 @@ extension BuildContextExtension on BuildContext {
           actions: [
             CupertinoDialogAction(
               isDestructiveAction: true,
-              child:  const Text('Ok',
-                  style: TextStyle(
+              child:  Text(context.localization.ok,
+                  style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600)),
               onPressed: () => context.pop(),

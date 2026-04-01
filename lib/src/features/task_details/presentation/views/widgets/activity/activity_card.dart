@@ -62,7 +62,7 @@ class ActivityCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          '${activity.actor?.name ?? 'Admin User'} ${_formatActivityAction(activity,context)}',
+                          '${activity.actor?.name ?? context.localization.admin_user} ${_formatActivityAction(activity,context)}',
                           style: context
                               .appTextTheme
                               .font11TextSecondaryRegular

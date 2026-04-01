@@ -1,3 +1,4 @@
+import 'package:isd_tms/src/features/auth/data/models/role_model.dart';
 import 'package:isd_tms/src/features/auth/data/models/user_model.dart';
 
 class LoginResponse {
@@ -19,9 +20,14 @@ class LoginResponse {
     final data = json['data'];
     if (data == null) return const LoginResponse();
 
+    final List<RoleModel> roles = (data['roles'] as List?)
+            ?.map((e) => RoleModel.fromJson(e))
+            .toList() ??
+        [];
+
     UserModel? user;
     if (data['user'] != null && data['user']['data'] != null) {
-      user = UserModel.fromJson(data['user']['data']);
+      user = UserModel.fromJson(data['user']['data'], roles: roles);
     }
 
     return LoginResponse(
@@ -33,3 +39,4 @@ class LoginResponse {
     );
   }
 }
+

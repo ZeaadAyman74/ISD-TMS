@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isd_tms/src/core/network/result/network_result.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_activity/task_activity_model.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_attachments/task_attachment_model.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_comments/task_comment_model.dart';
@@ -20,6 +21,11 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
   void updateCurrentCard(CardModel newCard) {
     currentCard = newCard;
     emit(UpdateCard());
+  }
+
+  ProjectModel? currentProject;
+  void setCurrentProject(ProjectModel project){
+    currentProject=project;
   }
 
   // ------------------------------------------------------------------------------

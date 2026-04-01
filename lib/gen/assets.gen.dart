@@ -22,6 +22,19 @@ class $LangGen {
   List<String> get values => [appAr, appEn];
 }
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/sa.svg
+  String get sa => 'assets/icons/sa.svg';
+
+  /// File path: assets/icons/us.svg
+  String get us => 'assets/icons/us.svg';
+
+  /// List of all assets
+  List<String> get values => [sa, us];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -35,6 +48,7 @@ class $AssetsImagesGen {
 class Assets {
   const Assets._();
 
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $LangGen lang = $LangGen();
 }

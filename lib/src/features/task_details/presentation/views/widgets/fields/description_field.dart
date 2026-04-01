@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:isd_tms/src/core/widgets/app_html_field.dart';
 import 'package:isd_tms/src/core/widgets/custom_field_label.dart';
 import 'package:isd_tms/src/features/task_details/data/models/update_task_model.dart';
@@ -53,11 +54,12 @@ class _DescriptionFieldState extends State<DescriptionField> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-          const CustomFieldLabel(label: 'Description'),
+          CustomFieldLabel(label: context.localization.description),
             AppHtmlField(
               controller: controller,
-              hint: "Add Description...",
+              hint: context.localization.add_description_hint,
               initialText: cubit.currentCard!.description,
+              isEnabled: cubit.currentProject!.permissions?.cards?.addDescription ??false,
               onChange: (val) {
                 final changed = (val != cubit.currentCard!.description);
                 if (_isChanged != changed) {

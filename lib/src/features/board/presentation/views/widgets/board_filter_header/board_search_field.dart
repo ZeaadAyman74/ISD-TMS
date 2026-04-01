@@ -28,7 +28,7 @@ class _BoardSearchFieldState extends State<BoardSearchField> {
       },
       onTapOutside:  (event) => FocusScope.of(context).unfocus(),
       decoration: InputDecoration(
-        hintText: 'Search cards...',
+        hintText: context.localization.search_cards_hint,
         prefixIcon: const Icon(Icons.search, size: 20),
         isDense: true,
         contentPadding: EdgeInsets.symmetric(vertical: 8.h),

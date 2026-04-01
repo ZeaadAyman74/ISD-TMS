@@ -10,6 +10,9 @@ import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/board_screen.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/members/members_screen.dart';
+import 'package:isd_tms/src/features/notifications/data/repo/notifications_repo.dart';
+import 'package:isd_tms/src/features/notifications/presentation/bloc/notifications_cubit.dart';
+import 'package:isd_tms/src/features/notifications/presentation/views/screens/notifications_screen.dart';
 import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/views/screens/task_detail_screen.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
@@ -17,6 +20,7 @@ import 'package:isd_tms/src/features/task_details/data/models/task_detail_args.d
 import 'package:isd_tms/src/features/projects/data/repo/projects_repo.dart';
 import 'package:isd_tms/src/features/projects/presentation/bloc/projects_cubit.dart';
 import 'package:isd_tms/src/features/projects/presentation/views/screens/projects_screen.dart';
+import 'package:isd_tms/src/features/profile/presentation/views/screens/profile_screen.dart';
 import 'package:isd_tms/src/features/splash/presentation/views/splash_screen.dart';
 
 part 'router.dart';
@@ -55,7 +59,9 @@ class AppRouter {
         final project = arguments as ProjectModel;
         return _buildRoute(
           BlocProvider(
-            create: (_) => BoardCubit(getIt<BoardRepo>())..getBoard(project.id),
+            create: (_) => BoardCubit(getIt<BoardRepo>())
+              ..setCurrentProject(project)
+              ..getBoard(),
             child: BoardScreen(project: project),
           ),
           settings,
@@ -65,14 +71,13 @@ class AppRouter {
         final args = arguments as TaskDetailArgs;
         return _buildRoute(
           BlocProvider(
-            create: (context) =>
-                getIt<TaskDetailsCubit>()..updateCurrentCard(args.card)
-                  ..getCardDetails(),
+            create: (context) => getIt<TaskDetailsCubit>()
+              ..setCurrentProject(args.project)
+              ..updateCurrentCard(args.card)
+              ..getCardDetails(),
             child: BlocProvider.value(
               value: args.boardCubit,
-              child: TaskDetailScreen(
-                card: args.card,
-              ),
+              child: TaskDetailScreen(card: args.card),
             ),
           ),
           settings,
@@ -82,7 +87,21 @@ class AppRouter {
         final args = arguments as MembersScreenArgs;
         return _buildRoute(MembersScreen(args: args), settings);
       //--------------------------------------------------------------------
+      case Routes.notifications:
+        return _buildRoute(
+          BlocProvider(
+            create: (_) =>
+                NotificationsCubit(getIt<NotificationsRepo>())
+                  ..getNotifications(),
+            child: const NotificationsScreen(),
+          ),
+          settings,
+        );
+      //--------------------------------------------------------------------
 
+      case Routes.profile:
+        return _buildRoute(const ProfileScreen(), settings);
+      //--------------------------------------------------------------------
       default:
         return null;
     }

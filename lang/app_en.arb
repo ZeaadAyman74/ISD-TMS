@@ -58,6 +58,48 @@
   "type": "Type",
   "priority": "Priority",
   "status": "Status",
-  "attachments": "Attachments"
-
+  "attachments": "Attachments",
+  "retry": "Retry",
+  "save": "Save",
+  "upload": "Upload",
+  "notifications": "Notifications",
+  "no_notifications": "No notifications yet",
+  "are_you_sure_delete_task": "Are you sure you want to delete this task?",
+  "task_deleted_success": "Task deleted successfully",
+  "delete_task": "Delete Task",
+  "delete": "Delete",
+  "comments_tab": "Comments ({count})",
+  "@comments_tab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "history_tab": "History",
+  "comments": "Comments",
+  "add_comment_hint": "Add Comment...",
+  "search_cards_hint": "Search cards...",
+  "add_description_hint": "Add Description...",
+  "assign_members": "Assign Members",
+  "assigned_label": "Assigned",
+  "not_set": "Not Set",
+  "notification_moved": "Moved",
+  "notification_mention": "Mention",
+  "notification_assigned": "Assigned",
+  "notification_comment": "Comment",
+  "notification_project_owner": "Project Owner",
+  "notification_member_added": "Member Added",
+  "notification_default": "Notification",
+  "admin_user": "Admin User",
+  "ok": "Ok",
+  "arabic": "Arabic",
+  "english": "English",
+  "profile": "Profile",
+  "language": "Language",
+  "projects_management": "Projects Management",
+  "you": "You"
 }
+
+
+

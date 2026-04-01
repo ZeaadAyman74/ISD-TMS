@@ -44,7 +44,7 @@ class _MemberSelectorBottomSheetState extends State<MemberSelectorBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Assign Members',
+                context.localization.assign_members,
                 style: context.appTextTheme.font16TextPrimarySemiBold,
               ),
               TextButton(
@@ -52,7 +52,7 @@ class _MemberSelectorBottomSheetState extends State<MemberSelectorBottomSheet> {
                   widget.onSelectionChanged(_tempSelectedIds);
                   Navigator.pop(context);
                 },
-                child: const Text('Save'),
+                child: Text(context.localization.save),
               ),
             ],
           ),

@@ -4,12 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/theme/app_colors.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
+import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task/add_task_lower_button.dart';
+import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task/show_add_task.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/task_card/task_card_widget.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task/add_task_dialog.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 
 class BoardColumnWidget extends StatelessWidget {
-  const BoardColumnWidget({super.key, required this.boardList, required this.projectId});
+  const BoardColumnWidget({
+    super.key,
+    required this.boardList,
+    required this.projectId,
+  });
 
   final BoardListModel boardList;
   final int projectId;
@@ -36,7 +42,6 @@ class BoardColumnWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<BoardCubit>();
     final cardsForList = cubit.getCardsForList(boardList.id);
-
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -71,8 +76,7 @@ class BoardColumnWidget extends StatelessWidget {
                 ),
                 // Card count badge
                 Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                   decoration: BoxDecoration(
                     color: _columnColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12.r),
@@ -86,11 +90,12 @@ class BoardColumnWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 4.w),
+                if(cubit.currentProject!.permissions?.cards?.add??false)
+                ...[SizedBox(width: 4.w),
                 GestureDetector(
-                  onTap: () => _showAddTaskDialog(context),
+                  onTap: () => showAddTaskDialog(context,listId: boardList.id,listTitle: boardList.title),
                   child: Icon(Icons.add, size: 20.r, color: AppColors.textHint),
-                ),
+                ),]
               ],
             ),
           ),
@@ -102,49 +107,23 @@ class BoardColumnWidget extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.only(bottom: 8.h),
-                  child: TaskCardWidget(card: cardsForList[index], projectId: projectId),
+                  child: TaskCardWidget(
+                    card: cardsForList[index],
+                    canDelete:
+                        cubit.currentProject!.permissions?.cards?.delete ??
+                        false,
+                  ),
                 );
               },
             ),
           ),
+          if(cubit.currentProject!.permissions?.cards?.add??false)
           // Add task button at bottom
-          GestureDetector(
-            onTap: () => _showAddTaskDialog(context),
-            child: Container(
-              padding: EdgeInsets.all(12.r),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: context.appColors.cardBackground,
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(8.r)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add, size: 16.r, color: AppColors.textSecondary),
-                  SizedBox(width: 4.w),
-                  Text(
-                    context.localization.add_task,
-                    style: context.appTextTheme.font13TextPrimaryMedium.copyWith(
-                      color: context.appColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          AddTaskLowerButton(listId: boardList.id,title: boardList.title),
         ],
       ),
     );
   }
 
-  void _showAddTaskDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => BlocProvider.value(
-        value: context.read<BoardCubit>(),
-        child: AddTaskDialog(listId: boardList.id, listTitle: boardList.title),
-      ),
-    );
-  }
+
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/views/widgets/attachemnts/attachment_section.dart';
 import 'package:isd_tms/src/features/task_details/presentation/views/widgets/fields/description_field.dart';
 import 'package:isd_tms/src/features/task_details/presentation/views/widgets/fields/title_field.dart';
@@ -9,6 +11,7 @@ class TaskDetailLeftSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit=context.read<TaskDetailsCubit>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -16,6 +19,7 @@ class TaskDetailLeftSection extends StatelessWidget {
         const TitleField(),
         16.verticalSpace,
         const DescriptionField(),
+        if( cubit.currentProject!.permissions?.cardAttachments?.show ??false)
         24.verticalSpace,
         const AttachmentSection(),
       ],
