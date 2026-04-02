@@ -20,7 +20,7 @@ class AttachmentSection extends StatelessWidget {
           current is GetAttachmentsSuccess ||
           current is GetAttachmentsError ||
           current is GetAttachmentsLoading ||
-          current is DeleteAttachmentSuccess,
+          current is DeleteAttachmentSuccess || current is UploadAttachmentSuccess,
       builder: (context, state) {
         if (state is GetAttachmentsLoading) {
           return const AppLoading();

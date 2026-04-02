@@ -15,6 +15,9 @@ class AssigneesField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final boardCubit=context.read<BoardCubit>();
+    final bool canChangeAssignees=((boardCubit.permissions?.cards?.assign ??
+        false)  || (boardCubit.permissions?.cards?.assign ?? false));
     return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
       buildWhen: (previous, current) => current is UpdateCard,
       builder: (context, state) {
@@ -47,7 +50,7 @@ class AssigneesField extends StatelessWidget {
                       ),
                 ),
 
-                if (card.assignees.isNotEmpty) SizedBox(width: 12.w),
+                if (card.assignees.isNotEmpty && canChangeAssignees ) SizedBox(width: 12.w),
                 InkWell(
                   onTap: () =>
                       _showMemberSelector(context, card.id, card.assignees),

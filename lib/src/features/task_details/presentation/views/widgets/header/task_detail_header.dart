@@ -58,30 +58,14 @@ class TaskDetailHeader extends StatelessWidget {
                   if(boardCubit.permissions?.cards?.delete??false)
                   IconButton(
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (confirmContext) => AlertDialog(
-                          title: Text(context.localization.delete_task),
-                          content: Text(
-                            context.localization.are_you_sure_delete_task,
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(confirmContext),
-                              child: Text(context.localization.cancel),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(confirmContext);
-                                boardCubit.deleteTask(card.id);
-                              },
-                              child: Text(
-                                context.localization.delete,
-                                style: const TextStyle(color: AppColors.error),
-                              ),
-                            ),
-                          ],
-                        ),
+                      context.showAdaptiveDialog(
+                        title: context.localization.delete_task,
+                        content: context.localization.are_you_sure_delete_task,
+                        actionName: context.localization.delete,
+                        actionColor: Colors.red,
+                        onPress: () {
+                          boardCubit.deleteTask(card.id);
+                        },
                       );
                     },
                     icon: const Icon(
