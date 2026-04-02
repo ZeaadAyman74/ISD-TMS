@@ -267,4 +267,67 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get you => 'انت';
+
+  @override
+  String get add => 'إضافة';
+
+  @override
+  String get add_member => 'إضافة عضو';
+
+  @override
+  String get role => 'الدور';
+
+  @override
+  String get no_members_found => 'لا يوجد أعضاء';
+
+  @override
+  String get failed_to_load_members => 'فشل في تحميل الأعضاء';
+
+  @override
+  String get select_role => 'اختر الدور';
+
+  @override
+  String members_screen_title(String projectName) {
+    return 'أعضاء $projectName';
+  }
+
+  @override
+  String remove_member_confirmation(String memberName) {
+    return 'هل أنت متأكد أنك تريد إزالة $memberName من هذا المشروع؟';
+  }
+
+  @override
+  String get role_changed_successfully => 'تم تغيير الدور بنجاح';
+
+  @override
+  String get member_removed_successfully => 'تمت إزالة العضو بنجاح';
+
+  @override
+  String get ownership_transferred_successfully => 'تم نقل الملكية بنجاح';
+
+  @override
+  String get no_email => 'لا يوجد بريد إلكتروني';
+
+  @override
+  String get member_role_chip => 'عضو';
+
+  @override
+  String get transfer_ownership => 'نقل الملكية';
+
+  @override
+  String get transfer_ownership_critical_warning =>
+      'هذا إجراء حرج لا يمكن التراجع عنه بسهولة';
+
+  @override
+  String get transfer_ownership_description =>
+      'أنت على وشك نقل ملكية المشروع. سيصبح المالك الحالي مديراً، وسيصبح العضو المختار هو المالك الجديد مع تحكم كامل.';
+
+  @override
+  String get select_new_owner => 'اختر المالك الجديد';
+
+  @override
+  String get transfer => 'نقل';
+
+  @override
+  String get member_added_successfully => 'تم إضافة العضو بنجاح';
 }

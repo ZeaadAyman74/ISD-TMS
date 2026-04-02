@@ -1,15 +1,19 @@
+import 'package:isd_tms/src/features/projects/data/models/project_permissions_model.dart';
+
 class BoardResponse {
   const BoardResponse({
     required this.lists,
     required this.cards,
     required this.labels,
     required this.members,
+    required this.permissions,
   });
 
   final List<BoardListModel> lists;
   final List<CardModel> cards;
   final List<LabelModel> labels;
   final List<BoardMember> members;
+  final ProjectPermissionsModel? permissions;
 
   factory BoardResponse.fromJson(Map<String, dynamic> json) {
     final data = json['data'] ?? json;
@@ -34,6 +38,9 @@ class BoardResponse {
               ?.map((e) => BoardMember.fromJson(e))
               .toList() ??
           [],
+      permissions: data['permissions'] != null
+          ? ProjectPermissionsModel.fromJson(data['permissions'])
+          : null,
     );
   }
 }
@@ -183,6 +190,7 @@ class BoardMember {
     required this.name,
     this.email,
     this.role,
+    this.photo,
   });
 
   final int id;
@@ -190,6 +198,7 @@ class BoardMember {
   final String name;
   final String? email;
   final String? role;
+  final String? photo;
 
   String get initials {
     if (name.isEmpty) return '?';
@@ -203,10 +212,11 @@ class BoardMember {
   factory BoardMember.fromJson(Map<String, dynamic> json) {
     return BoardMember(
       id: json['id'] ?? 0,
-      userId: json['user_id'] ?? 0,
-      name: json['name'] ?? '',
+      userId: json['user_id'] ??json['id'] ?? 0,
+      name: json['name']??json['full_name'] ?? '',
       email: json['email'],
       role: json['role'],
+      photo: json['photo_url']
     );
   }
 }

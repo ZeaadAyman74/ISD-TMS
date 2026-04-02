@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isd_tms/src/core/widgets/app_loading.dart';
 import 'package:isd_tms/src/core/widgets/error_state_widget.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/views/widgets/comments/comment_input_field.dart';
 import 'package:isd_tms/src/features/task_details/presentation/views/widgets/comments/comment_list.dart';
@@ -15,14 +16,15 @@ class CommentsView extends StatefulWidget {
 
 class _CommentsViewState extends State<CommentsView>with AutomaticKeepAliveClientMixin{
   TaskDetailsCubit get cubit => context.read<TaskDetailsCubit>();
+  BoardCubit get boardCubit=>context.read<BoardCubit>();
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Column(
       children: [
-        if(cubit.currentProject!.permissions?.cardComments?.add??false)
+        if(boardCubit.permissions?.cardComments?.add??false)
         const CommentInputField(),
-        if(cubit.currentProject!.permissions?.cardComments?.show??false)
+        if(boardCubit.permissions?.cardComments?.show??false)
           Expanded(
           child: BlocBuilder(
             bloc: cubit,

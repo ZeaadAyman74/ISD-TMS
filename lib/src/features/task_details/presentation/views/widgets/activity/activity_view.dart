@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isd_tms/src/core/widgets/app_loading.dart';
 import 'package:isd_tms/src/core/widgets/error_state_widget.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/views/widgets/activity/activity_list.dart';
 
@@ -14,11 +15,12 @@ class ActivityView extends StatefulWidget {
 
 class _ActivityViewState extends State<ActivityView>with AutomaticKeepAliveClientMixin {
   TaskDetailsCubit get cubit => context.read<TaskDetailsCubit>();
+  BoardCubit get boardCubit=>context.read<BoardCubit>();
 
   @override
   void initState() {
     super.initState();
-    if(cubit.currentProject!.permissions?.activities?.show??false){
+    if(boardCubit.permissions?.activities?.show??false){
       cubit.getHistory();
     }
   }

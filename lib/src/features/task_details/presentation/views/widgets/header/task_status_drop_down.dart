@@ -30,7 +30,7 @@ class _StatusDropdownState extends State<StatusDropdown> {
       dropdownItems: List.from(
         boardCubit.lists.map((e) => DropdownModel(title: e.title, value: e.id)),
       ),
-      onChanged: (cubit.currentProject!.permissions?.cards?.move ?? false) ? (
+      onChanged: (boardCubit.permissions?.cards?.move ?? false) ? (
           int? val) {
         selectedValue = val;
         if (val != null && val != cubit.currentCard!.listId) {

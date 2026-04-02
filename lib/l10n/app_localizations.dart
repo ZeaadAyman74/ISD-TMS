@@ -613,6 +613,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You'**
   String get you;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @add_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Member'**
+  String get add_member;
+
+  /// No description provided for @role.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get role;
+
+  /// No description provided for @no_members_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No members found'**
+  String get no_members_found;
+
+  /// No description provided for @failed_to_load_members.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load members'**
+  String get failed_to_load_members;
+
+  /// No description provided for @select_role.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Role'**
+  String get select_role;
+
+  /// No description provided for @members_screen_title.
+  ///
+  /// In en, this message translates to:
+  /// **'{projectName} Members'**
+  String members_screen_title(String projectName);
+
+  /// No description provided for @remove_member_confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove {memberName} from this project?'**
+  String remove_member_confirmation(String memberName);
+
+  /// No description provided for @role_changed_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Role changed successfully'**
+  String get role_changed_successfully;
+
+  /// No description provided for @member_removed_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Member removed successfully'**
+  String get member_removed_successfully;
+
+  /// No description provided for @ownership_transferred_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Ownership transferred successfully'**
+  String get ownership_transferred_successfully;
+
+  /// No description provided for @no_email.
+  ///
+  /// In en, this message translates to:
+  /// **'No email'**
+  String get no_email;
+
+  /// No description provided for @member_role_chip.
+  ///
+  /// In en, this message translates to:
+  /// **'member'**
+  String get member_role_chip;
+
+  /// No description provided for @transfer_ownership.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer Ownership'**
+  String get transfer_ownership;
+
+  /// No description provided for @transfer_ownership_critical_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a critical action that cannot be undone easily'**
+  String get transfer_ownership_critical_warning;
+
+  /// No description provided for @transfer_ownership_description.
+  ///
+  /// In en, this message translates to:
+  /// **'You are about to transfer project ownership. The current owner will become an Admin, and the selected member will become the new Owner with full control.'**
+  String get transfer_ownership_description;
+
+  /// No description provided for @select_new_owner.
+  ///
+  /// In en, this message translates to:
+  /// **'Select New Owner'**
+  String get select_new_owner;
+
+  /// No description provided for @transfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get transfer;
+
+  /// No description provided for @member_added_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Member Added Successfully'**
+  String get member_added_successfully;
 }
 
 class _AppLocalizationsDelegate

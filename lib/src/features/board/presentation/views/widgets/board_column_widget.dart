@@ -7,7 +7,6 @@ import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task/add_task_lower_button.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task/show_add_task.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/task_card/task_card_widget.dart';
-import 'package:isd_tms/src/features/board/presentation/views/widgets/add_task/add_task_dialog.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 
 class BoardColumnWidget extends StatelessWidget {
@@ -90,7 +89,7 @@ class BoardColumnWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                if(cubit.currentProject!.permissions?.cards?.add??false)
+                if(cubit.permissions?.cards?.add??false)
                 ...[SizedBox(width: 4.w),
                 GestureDetector(
                   onTap: () => showAddTaskDialog(context,listId: boardList.id,listTitle: boardList.title),
@@ -110,14 +109,14 @@ class BoardColumnWidget extends StatelessWidget {
                   child: TaskCardWidget(
                     card: cardsForList[index],
                     canDelete:
-                        cubit.currentProject!.permissions?.cards?.delete ??
+                        cubit.permissions?.cards?.delete ??
                         false,
                   ),
                 );
               },
             ),
           ),
-          if(cubit.currentProject!.permissions?.cards?.add??false)
+          if(cubit.permissions?.cards?.add??false)
           // Add task button at bottom
           AddTaskLowerButton(listId: boardList.id,title: boardList.title),
         ],

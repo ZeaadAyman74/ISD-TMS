@@ -15,7 +15,6 @@ class PriorityField extends StatefulWidget {
 
 class _PriorityFieldState extends State<PriorityField> {
   BoardCubit get boardCubit => context.read<BoardCubit>();
-
   TaskDetailsCubit get cubit => context.read<TaskDetailsCubit>();
   String? selectedValue;
 
@@ -36,7 +35,7 @@ class _PriorityFieldState extends State<PriorityField> {
         ),
       ),
       onChanged:
-          (cubit.currentProject!.permissions?.cards?.setPriority??false)
+          (boardCubit.permissions?.cards?.setPriority??false)
           ? (String? val) {
               setState(() {
                 selectedValue = val;

@@ -59,7 +59,7 @@ class _DescriptionFieldState extends State<DescriptionField> {
               controller: controller,
               hint: context.localization.add_description_hint,
               initialText: cubit.currentCard!.description,
-              isEnabled: cubit.currentProject!.permissions?.cards?.addDescription ??false,
+              isEnabled: boardCubit.permissions?.cards?.addDescription ??false,
               onChange: (val) {
                 final changed = (val != cubit.currentCard!.description);
                 if (_isChanged != changed) {

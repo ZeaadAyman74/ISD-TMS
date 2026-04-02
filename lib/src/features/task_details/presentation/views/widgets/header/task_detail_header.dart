@@ -15,6 +15,7 @@ class TaskDetailHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit=context.read<TaskDetailsCubit>();
+    BoardCubit  boardCubit=context.read<BoardCubit>();
     return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
       buildWhen: (previous, current) => current is UpdateCard,
       builder: (context, state) {
@@ -54,7 +55,7 @@ class TaskDetailHeader extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if(cubit.currentProject!.permissions?.cards?.delete??false)
+                  if(boardCubit.permissions?.cards?.delete??false)
                   IconButton(
                     onPressed: () {
                       showDialog(
@@ -72,7 +73,7 @@ class TaskDetailHeader extends StatelessWidget {
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(confirmContext);
-                                context.read<BoardCubit>().deleteTask(card.id);
+                                boardCubit.deleteTask(card.id);
                               },
                               child: Text(
                                 context.localization.delete,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/widgets/app_loading.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/task_details/presentation/bloc/task_details_cubit.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:file_picker/file_picker.dart';
@@ -13,6 +14,7 @@ class AttachmentSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<TaskDetailsCubit>();
+    final boardCubit=context.read<BoardCubit>();
     return BlocBuilder<TaskDetailsCubit, TaskDetailsState>(
       buildWhen: (previous, current) =>
           current is GetAttachmentsSuccess ||
@@ -45,7 +47,7 @@ class AttachmentSection extends StatelessWidget {
                 _CountChip(count: cubit.attachments.length),
               ],
             ),
-            trailing:(cubit.currentProject!.permissions?.cardAttachments?.add ??false)? Row(
+            trailing:(boardCubit.permissions?.cardAttachments?.add ??false)? Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextButton.icon(
@@ -79,7 +81,7 @@ class AttachmentSection extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: AttachmentItem(
                     attachment: a,
-                    canDelete: cubit.currentProject?.permissions?.cardAttachments?.delete??false,
+                    canDelete: boardCubit.permissions?.cardAttachments?.delete??false,
                     onDelete: () =>
                         context.read<TaskDetailsCubit>().deleteAttachment(a.id),
                   ),

@@ -18,7 +18,7 @@ class MembersFab extends StatelessWidget {
       builder: (context, state) {
         if (state is BoardLoading ||
             state is BoardError ||
-            !(cubit.currentProject?.permissions?.projectMembers?.show ??
+            !(cubit.permissions?.projectMembers?.show ??
                 false)) {
           return const SizedBox.shrink();
         }
@@ -28,8 +28,8 @@ class MembersFab extends StatelessWidget {
             context.push(
               Routes.members,
               args: MembersScreenArgs(
-                members: cubit.members,
-                projectName: cubit.currentProject?.name ?? '',
+                boardCubit: cubit,
+                project: cubit.currentProject!,
               ),
             );
           },

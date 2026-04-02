@@ -1,4 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:isd_tms/src/features/board/data/repo/members_repo.dart';
+import 'package:isd_tms/src/features/board/data/service/members/members_service.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/add_member/add_member_cubit.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/members/members_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart';
@@ -68,6 +72,12 @@ class DependencyInjection {
     getIt.registerLazySingleton(() => NotificationsService(getIt<Dio>()));
     getIt.registerLazySingleton(() => NotificationsRepo(getIt<NotificationsService>()));
     getIt.registerFactory(() => NotificationsCubit(getIt<NotificationsRepo>()));
+
+    // --- Notifications ---
+    getIt.registerLazySingleton(() => MembersService(getIt<Dio>()),);
+    getIt.registerLazySingleton(() => MembersRepo(getIt<MembersService>()));
+    getIt.registerFactory(() => MembersCubit(getIt<MembersRepo>()));
+    getIt.registerFactory(() => AddMemberCubit(getIt<MembersRepo>()),);
   }
 }
 

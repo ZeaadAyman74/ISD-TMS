@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
+import 'package:isd_tms/src/features/projects/data/models/project_permissions_model.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_details_models.dart';
 import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
 import 'package:isd_tms/src/core/network/result/network_result.dart';
@@ -27,6 +28,7 @@ class BoardCubit extends Cubit<BoardState> {
   List<BoardMember> members = [];
   List<LookupModel> cardTypes = [];
   List<LookupModel> cardPriorities = [];
+  ProjectPermissionsModel? permissions;
 
 
   String searchQuery = '';
@@ -53,6 +55,7 @@ class BoardCubit extends Cubit<BoardState> {
         cards = board.cards;
         labels = board.labels;
         members = board.members;
+        permissions=board.permissions;
 
         if (typesResult != null) {
           typesResult.when(

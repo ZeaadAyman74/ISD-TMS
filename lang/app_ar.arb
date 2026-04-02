@@ -98,8 +98,40 @@
   "profile": "الملف الشخصي",
   "language": "اللغة",
   "projects_management": "Projects Management",
-  "you": "انت"
-
+  "you": "انت",
+  "add": "إضافة",
+  "add_member": "إضافة عضو",
+  "role": "الدور",
+  "no_members_found": "لا يوجد أعضاء",
+  "failed_to_load_members": "فشل في تحميل الأعضاء",
+  "select_role": "اختر الدور",
+  "members_screen_title": "أعضاء {projectName}",
+  "@members_screen_title": {
+    "placeholders": {
+      "projectName": {
+        "type": "String"
+      }
+    }
+  },
+  "remove_member_confirmation": "هل أنت متأكد أنك تريد إزالة {memberName} من هذا المشروع؟",
+  "@remove_member_confirmation": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "role_changed_successfully": "تم تغيير الدور بنجاح",
+  "member_removed_successfully": "تمت إزالة العضو بنجاح",
+  "ownership_transferred_successfully": "تم نقل الملكية بنجاح",
+  "no_email": "لا يوجد بريد إلكتروني",
+  "member_role_chip": "عضو",
+  "transfer_ownership": "نقل الملكية",
+  "transfer_ownership_critical_warning": "هذا إجراء حرج لا يمكن التراجع عنه بسهولة",
+  "transfer_ownership_description": "أنت على وشك نقل ملكية المشروع. سيصبح المالك الحالي مديراً، وسيصبح العضو المختار هو المالك الجديد مع تحكم كامل.",
+  "select_new_owner": "اختر المالك الجديد",
+  "transfer": "نقل",
+  "member_added_successfully": "تم إضافة العضو بنجاح"
 }
 
 

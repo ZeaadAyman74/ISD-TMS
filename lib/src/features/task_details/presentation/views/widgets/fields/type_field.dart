@@ -34,7 +34,7 @@ class _TypeFieldState extends State<TypeField> {
           (e) => DropdownModel(title: e.label, value: e.key),
         ),
       ),
-      onChanged:(cubit.currentProject!.permissions?.cards?.edit ?? false)? (String? val) {
+      onChanged:(boardCubit.permissions?.cards?.edit ?? false)? (String? val) {
         setState(() {
           selectedValue = val;
         });

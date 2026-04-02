@@ -8,6 +8,7 @@ import 'package:isd_tms/src/features/auth/presentation/views/screens/login_scree
 import 'package:isd_tms/src/features/board/data/models/memebers/members_screen_args.dart';
 import 'package:isd_tms/src/features/board/data/repo/board_repo.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
+import 'package:isd_tms/src/features/board/presentation/bloc/members/members_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/board_screen.dart';
 import 'package:isd_tms/src/features/board/presentation/views/screens/members/members_screen.dart';
 import 'package:isd_tms/src/features/notifications/data/repo/notifications_repo.dart';
@@ -85,7 +86,18 @@ class AppRouter {
       //--------------------------------------------------------------------
       case Routes.members:
         final args = arguments as MembersScreenArgs;
-        return _buildRoute(MembersScreen(args: args), settings);
+        return _buildRoute(
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => getIt<MembersCubit>(),
+              ),
+              BlocProvider.value(value: args.boardCubit)
+            ],
+            child: MembersScreen(args: args),
+          ),
+          settings,
+        );
       //--------------------------------------------------------------------
       case Routes.notifications:
         return _buildRoute(

@@ -98,7 +98,40 @@
   "profile": "Profile",
   "language": "Language",
   "projects_management": "Projects Management",
-  "you": "You"
+  "you": "You",
+  "add": "Add",
+  "add_member": "Add Member",
+  "role": "Role",
+  "no_members_found": "No members found",
+  "failed_to_load_members": "Failed to load members",
+  "select_role": "Select Role",
+  "members_screen_title": "{projectName} Members",
+  "@members_screen_title": {
+    "placeholders": {
+      "projectName": {
+        "type": "String"
+      }
+    }
+  },
+  "remove_member_confirmation": "Are you sure you want to remove {memberName} from this project?",
+  "@remove_member_confirmation": {
+    "placeholders": {
+      "memberName": {
+        "type": "String"
+      }
+    }
+  },
+  "role_changed_successfully": "Role changed successfully",
+  "member_removed_successfully": "Member removed successfully",
+  "ownership_transferred_successfully": "Ownership transferred successfully",
+  "no_email": "No email",
+  "member_role_chip": "member",
+  "transfer_ownership": "Transfer Ownership",
+  "transfer_ownership_critical_warning": "This is a critical action that cannot be undone easily",
+  "transfer_ownership_description": "You are about to transfer project ownership. The current owner will become an Admin, and the selected member will become the new Owner with full control.",
+  "select_new_owner": "Select New Owner",
+  "transfer": "Transfer",
+  "member_added_successfully": "Member Added Successfully"
 }
 
 

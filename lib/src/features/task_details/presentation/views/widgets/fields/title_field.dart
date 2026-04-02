@@ -16,6 +16,7 @@ class TitleField extends StatefulWidget {
 
 class _TitleFieldState extends State<TitleField> {
   TaskDetailsCubit get cubit => context.read<TaskDetailsCubit>();
+  BoardCubit get boardCubit=>context.read<BoardCubit>();
   late TextEditingController _controller;
   bool _isChanged = false;
 
@@ -53,7 +54,7 @@ class _TitleFieldState extends State<TitleField> {
             CustomFormField(
               labelText: 'Title',
               controller: _controller,
-              isEnable: cubit.currentProject!.permissions?.cards?.edit ??false,
+              isEnable: boardCubit.permissions?.cards?.edit ??false,
               hintText: 'Task Title',
               onChanged: (val) {
                 final changed =

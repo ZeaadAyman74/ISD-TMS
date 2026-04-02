@@ -269,4 +269,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get you => 'You';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get add_member => 'Add Member';
+
+  @override
+  String get role => 'Role';
+
+  @override
+  String get no_members_found => 'No members found';
+
+  @override
+  String get failed_to_load_members => 'Failed to load members';
+
+  @override
+  String get select_role => 'Select Role';
+
+  @override
+  String members_screen_title(String projectName) {
+    return '$projectName Members';
+  }
+
+  @override
+  String remove_member_confirmation(String memberName) {
+    return 'Are you sure you want to remove $memberName from this project?';
+  }
+
+  @override
+  String get role_changed_successfully => 'Role changed successfully';
+
+  @override
+  String get member_removed_successfully => 'Member removed successfully';
+
+  @override
+  String get ownership_transferred_successfully =>
+      'Ownership transferred successfully';
+
+  @override
+  String get no_email => 'No email';
+
+  @override
+  String get member_role_chip => 'member';
+
+  @override
+  String get transfer_ownership => 'Transfer Ownership';
+
+  @override
+  String get transfer_ownership_critical_warning =>
+      'This is a critical action that cannot be undone easily';
+
+  @override
+  String get transfer_ownership_description =>
+      'You are about to transfer project ownership. The current owner will become an Admin, and the selected member will become the new Owner with full control.';
+
+  @override
+  String get select_new_owner => 'Select New Owner';
+
+  @override
+  String get transfer => 'Transfer';
+
+  @override
+  String get member_added_successfully => 'Member Added Successfully';
 }

@@ -1,6 +1,5 @@
 import 'package:isd_tms/src/features/projects/data/models/project_member_model.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_owner_model.dart';
-import 'package:isd_tms/src/features/projects/data/models/project_permissions_model.dart';
 
 class ProjectModel {
   const ProjectModel({
@@ -19,7 +18,7 @@ class ProjectModel {
     this.owner,
     this.members,
     this.currentMember,
-    this.permissions,
+    // this.permissions,
   });
 
   final int id;
@@ -37,7 +36,7 @@ class ProjectModel {
   final ProjectOwner? owner;
   final List<ProjectMember>? members;
   final ProjectMember? currentMember;
-  final ProjectPermissionsModel? permissions;
+  // final ProjectPermissionsModel? permissions;
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
     return ProjectModel(
@@ -64,9 +63,9 @@ class ProjectModel {
               json['current_member'] as Map<String, dynamic>,
             )
           : null,
-      permissions: json['permissions'] != null
-          ? ProjectPermissionsModel.fromJson(json['permissions'])
-          : null,
+      // permissions: json['permissions'] != null
+      //     ? ProjectPermissionsModel.fromJson(json['permissions'])
+      //     : null,
     );
   }
 }

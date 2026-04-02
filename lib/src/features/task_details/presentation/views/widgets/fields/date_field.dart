@@ -16,6 +16,7 @@ class DateField extends StatefulWidget {
 
 class _DateFieldState extends State<DateField> {
   TaskDetailsCubit get cubit => context.read<TaskDetailsCubit>();
+  BoardCubit get boardCubit=>context.read<BoardCubit>();
   String? selectedDate;
 
   @override
@@ -30,7 +31,7 @@ class _DateFieldState extends State<DateField> {
             CustomFieldLabel(label: context.localization.due_date),
             InkWell(
               onTap: () async {
-                if(!(cubit.currentProject!.permissions?.cards?.setDates??false)) {
+                if(!(boardCubit.permissions?.cards?.setDates??false)) {
                   return ;
                 }
                 final date = await showDatePicker(
