@@ -10,13 +10,55 @@ class CommentCard extends StatelessWidget {
   final TaskCommentModel comment;
   final VoidCallback onDelete;
 
-  String _stripHtml(String text) {
+  List<InlineSpan> parseHtmlWithMentions(String html) {
+    final List<InlineSpan> spans = [];
+
+    final regex = RegExp(
+      r'<span class="mention-badge" data-mention-id="(\d+)">([^<]+)</span>',
+    );
+
+    int currentIndex = 0;
+
+    for (final match in regex.allMatches(html)) {
+      // Normal text before mention
+      if (match.start > currentIndex) {
+        final normalText = html.substring(currentIndex, match.start);
+        spans.add(TextSpan(
+          text: _cleanText(normalText),
+          style: const TextStyle(color: Colors.black),
+        ));
+      }
+
+      final mentionText = match.group(2)!;
+
+      // 🔥 Mention styled differently
+      spans.add(TextSpan(
+        text: mentionText,
+        style: const TextStyle(
+          color: Colors.blue,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      ));
+
+      currentIndex = match.end;
+    }
+
+    // Remaining text
+    if (currentIndex < html.length) {
+      spans.add(TextSpan(
+        text: _cleanText(html.substring(currentIndex)),
+        style: const TextStyle(color: Colors.black),
+      ));
+    }
+
+    return spans;
+  }
+  String _cleanText(String text) {
     return text
-        .replaceAll(
-          RegExp(r'<[^>]*>', multiLine: true, caseSensitive: true),
-          '',
-        )
-        .trim();
+        .replaceAll(RegExp(r'<[^>]*>'), '')
+        .replaceAll('&nbsp;', ' ')
+        .replaceAll('\n', '');
   }
 
   @override
@@ -64,10 +106,12 @@ class CommentCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text(
-                  _stripHtml(comment.content),
-                  style: context.appTextTheme.font14TextPrimaryRegular,
-                ),
+                RichText(
+                  text: TextSpan(
+                    children: parseHtmlWithMentions(comment.content),
+                    style:  context.appTextTheme.font14TextPrimaryRegular,
+                  ),
+                )
               ],
             ),
           ),

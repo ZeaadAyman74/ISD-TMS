@@ -1,7 +1,9 @@
+import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_permissions_model.dart';
 
 class BoardResponse {
   const BoardResponse({
+    required this.project,
     required this.lists,
     required this.cards,
     required this.labels,
@@ -9,6 +11,7 @@ class BoardResponse {
     required this.permissions,
   });
 
+  final ProjectModel? project;
   final List<BoardListModel> lists;
   final List<CardModel> cards;
   final List<LabelModel> labels;
@@ -18,6 +21,7 @@ class BoardResponse {
   factory BoardResponse.fromJson(Map<String, dynamic> json) {
     final data = json['data'] ?? json;
     return BoardResponse(
+      project: data['project']!=null?ProjectModel.fromJson(data['project']):null,
       lists:
           (data['lists'] as List?)
               ?.map((e) => BoardListModel.fromJson(e))

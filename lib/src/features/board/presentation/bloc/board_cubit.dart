@@ -18,11 +18,12 @@ class BoardCubit extends Cubit<BoardState> {
 
   // ----------------------------------------------------
 
-  ProjectModel? currentProject;
-  void setCurrentProject(ProjectModel project){
-    currentProject=project;
+  int? projectId;
+  void setCurrentProject(int projectId){
+    this.projectId=projectId;
   }
   //------------------------------------------------------
+  ProjectModel? currentProject;
   List<BoardListModel> lists = [];
   List<CardModel> cards = [];
   List<LabelModel> labels = [];
@@ -41,7 +42,7 @@ class BoardCubit extends Cubit<BoardState> {
     emit(const BoardLoading());
 
     final results = await Future.wait([
-      _repo.getProjectBoard(currentProject!.id),
+      _repo.getProjectBoard(projectId!),
       _repo.getCardTypes(),
       _repo.getCardPriorities(),
     ]);
@@ -52,6 +53,7 @@ class BoardCubit extends Cubit<BoardState> {
 
     boardResult.when(
       success: (board) {
+        currentProject=board.project;
         lists = board.lists..sort((a, b) => a.position.compareTo(b.position));
         cards = board.cards;
         labels = board.labels;
@@ -148,14 +150,14 @@ class BoardCubit extends Cubit<BoardState> {
     required String title,
     required int listId,
   }) async {
-    if (currentProject == null) return;
+    if (projectId == null) return;
 
     final cardsInList = getCardsForList(listId);
     final position = cardsInList.length;
 
     emit(const AddCardLoading());
     final result = await _repo.createCard(
-      projectId: currentProject!.id,
+      projectId: projectId!,
       title: title,
       listId: listId,
       position: position,
@@ -179,11 +181,11 @@ class BoardCubit extends Cubit<BoardState> {
     required int cardId,
     required UpdateTaskModel data,
   }) async {
-    if (currentProject == null) return;
+    if (projectId == null) return;
 
     emit(const UpdateTaskLoading());
     final result = await _repo.updateCard(
-      projectId: currentProject!.id,
+      projectId: projectId!,
       cardId: cardId,
       data: data.toJson(),
     );
@@ -233,11 +235,11 @@ class BoardCubit extends Cubit<BoardState> {
   //----------------------------------------------------------------------------
 
   Future<void> deleteTask(int cardId) async {
-    if (currentProject == null) return;
+    if (projectId == null) return;
 
     emit(const DeleteTaskLoading());
     final result = await _repo.deleteCard(
-      projectId: currentProject!.id,
+      projectId: projectId!,
       cardId: cardId,
     );
 
@@ -325,7 +327,7 @@ class BoardCubit extends Cubit<BoardState> {
   Future<void> reorderCards(int targetListId, List<int> cardIds) async {
     emit(const ReorderCardLoading());
     final result = await _repo.reorderCards(
-      projectId: currentProject!.id,
+      projectId: projectId!,
       listId: targetListId,
       data: ReorderCardsRequestModel(cardsIds: cardIds),
     );

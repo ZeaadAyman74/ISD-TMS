@@ -22,7 +22,6 @@ class MembersScreen extends StatefulWidget {
 
 class _MembersScreenState extends State<MembersScreen> {
   MembersCubit get cubit => context.read<MembersCubit>();
-
   BoardCubit get boardCubit => context.read<BoardCubit>();
 
   @override

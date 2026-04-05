@@ -61,7 +61,7 @@ class AppRouter {
         return _buildRoute(
           BlocProvider(
             create: (_) => BoardCubit(getIt<BoardRepo>())
-              ..setCurrentProject(project)
+              ..setCurrentProject(project.id)
               ..getBoard(),
             child: BoardScreen(project: project),
           ),
@@ -73,7 +73,6 @@ class AppRouter {
         return _buildRoute(
           BlocProvider(
             create: (context) => getIt<TaskDetailsCubit>()
-              ..setCurrentProject(args.project)
               ..updateCurrentCard(args.card)
               ..getCardDetails(),
             child: BlocProvider.value(

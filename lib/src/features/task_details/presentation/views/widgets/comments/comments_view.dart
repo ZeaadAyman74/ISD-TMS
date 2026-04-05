@@ -32,7 +32,7 @@ class _CommentsViewState extends State<CommentsView>with AutomaticKeepAliveClien
                 current is GetCommentsLoading ||
                 current is GetCommentsError ||
                 current is GetCommentsSuccess ||
-                current is AddCommentSuccess,
+                current is AddCommentSuccess || current is DeleteCommentSuccess,
             builder: (context, state) {
               if (state is GetCommentsLoading) {
                 return const AppLoading();

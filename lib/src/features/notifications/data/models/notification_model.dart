@@ -1,3 +1,4 @@
+import 'package:isd_tms/src/core/helpers/shared_pref/shared_pref_utils.dart';
 import 'package:isd_tms/src/core/utils/app_date_formater.dart';
 
 class NotificationsResponse {
@@ -9,9 +10,7 @@ class NotificationsResponse {
   factory NotificationsResponse.fromJson(Map<String, dynamic> json) {
     return NotificationsResponse(
       notifications: json['data'] != null
-          ? List.from(
-              json['data'].map((e) => NotificationModel.fromJson(e)),
-            )
+          ? List.from(json['data'].map((e) => NotificationModel.fromJson(e)))
           : [],
       meta: json['meta'] != null
           ? NotificationMeta.fromJson(json['meta'])
@@ -145,7 +144,6 @@ class NotificationModel {
 
 class NotificationData {
   const NotificationData({
-    this.message,
     this.actorName,
     this.actorAvatar,
     this.actorId,
@@ -154,9 +152,12 @@ class NotificationData {
     this.card,
     this.project,
     this.extra,
+    this.messageEn,
+    this.messageAr,
   });
 
-  final String? message;
+  final String? messageEn;
+  final String? messageAr;
   final String? actorName;
   final String? actorAvatar;
   final int? actorId;
@@ -168,7 +169,6 @@ class NotificationData {
 
   factory NotificationData.fromJson(Map<String, dynamic> json) {
     return NotificationData(
-      message: json['message'],
       actorName: json['actor_name'],
       actorAvatar: json['actor_avatar'],
       actorId: json['actor_id'],
@@ -183,18 +183,18 @@ class NotificationData {
       extra: json['extra'] != null
           ? NotificationExtra.fromJson(json['extra'])
           : null,
+      messageEn: json['translations']['en']['message']??json['message'],
+      messageAr: json['translations']['ar']['message']??json['message'],
     );
   }
+
+  String? get message => SharedPrefUtils.locale=='ar'?messageAr:messageEn;
 }
 
 //-----------------------------------------------------------------------
 
 class NotificationCardModel {
-  const NotificationCardModel({
-    required this.id,
-    this.code,
-    this.title,
-  });
+  const NotificationCardModel({required this.id, this.code, this.title});
 
   final int id;
   final String? code;
@@ -212,30 +212,20 @@ class NotificationCardModel {
 //-----------------------------------------------------------------------
 
 class NotificationProject {
-  const NotificationProject({
-    required this.id,
-    required this.name,
-  });
+  const NotificationProject({required this.id, required this.name});
 
   final int id;
   final String name;
 
   factory NotificationProject.fromJson(Map<String, dynamic> json) {
-    return NotificationProject(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-    );
+    return NotificationProject(id: json['id'] ?? 0, name: json['name'] ?? '');
   }
 }
 
 //-----------------------------------------------------------------------
 
 class NotificationExtra {
-  const NotificationExtra({
-    this.toList,
-    this.fromList,
-    this.commentId,
-  });
+  const NotificationExtra({this.toList, this.fromList, this.commentId});
 
   final String? toList;
   final String? fromList;
