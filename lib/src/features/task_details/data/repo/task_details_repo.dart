@@ -8,52 +8,63 @@ import 'package:isd_tms/src/features/task_details/data/models/task_attachments/u
 import 'package:isd_tms/src/features/task_details/data/models/task_comments/add_comment_response.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_comments/task_comment_model.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_details_models.dart';
+import 'package:isd_tms/src/features/task_details/data/service/download_service.dart';
 import 'package:isd_tms/src/features/task_details/data/service/task_details_service.dart';
 
 class TaskDetailsRepo {
-  const TaskDetailsRepo(this._service);
-  final TaskDetailsService _service;
+  const TaskDetailsRepo(this._service, this._downloadService);
 
+  final TaskDetailsService _service;
+  final DownloadService _downloadService;
+
+  //----------------------------------------------------------------------
   Future<NetworkResult<CardModel>> updateCard({
     required int projectId,
     required int cardId,
     required Map<String, dynamic> data,
   }) async {
     try {
-      final response = await _service.updateTask(
-        projectId,
-        cardId,
-        data,
-      );
+      final response = await _service.updateTask(projectId, cardId, data);
       final responseData = response.data['data'];
       return NetworkResult.success(
-          CardModel.fromJson(responseData['data'] ?? responseData));
+        CardModel.fromJson(responseData['data'] ?? responseData),
+      );
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }
   }
 
+  //----------------------------------------------------------------------
   Future<NetworkResult<List<LookupModel>>> getCardTypes() async {
     try {
       final response = await _service.getCardTypes();
       final List data = response.data['data'];
-      return NetworkResult.success(data.map((e) => LookupModel.fromJson(e)).toList());
+      return NetworkResult.success(
+        data.map((e) => LookupModel.fromJson(e)).toList(),
+      );
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }
   }
 
+  //----------------------------------------------------------------------
   Future<NetworkResult<List<LookupModel>>> getCardPriorities() async {
     try {
       final response = await _service.getCardPriorities();
       final List data = response.data['data'];
-      return NetworkResult.success(data.map((e) => LookupModel.fromJson(e)).toList());
+      return NetworkResult.success(
+        data.map((e) => LookupModel.fromJson(e)).toList(),
+      );
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }
   }
 
-  Future<NetworkResult<TaskAttachmentsResponse>> getCardAttachments(int projectId, int cardId) async {
+  //----------------------------------------------------------------------
+  Future<NetworkResult<TaskAttachmentsResponse>> getCardAttachments(
+    int projectId,
+    int cardId,
+  ) async {
     try {
       final response = await _service.getTaskAttachments(projectId, cardId);
       return NetworkResult.success(response);
@@ -62,6 +73,7 @@ class TaskDetailsRepo {
     }
   }
 
+  //----------------------------------------------------------------------
   Future<NetworkResult<UploadAttachmentResponse>> uploadAttachment({
     required int projectId,
     required int cardId,
@@ -76,9 +88,18 @@ class TaskDetailsRepo {
     }
   }
 
-  Future<NetworkResult<bool>> deleteAttachment(int projectId, int cardId, int attachmentId) async {
+  //----------------------------------------------------------------------
+  Future<NetworkResult<bool>> deleteAttachment(
+    int projectId,
+    int cardId,
+    int attachmentId,
+  ) async {
     try {
-      final response = await _service.deleteAttachment(projectId, cardId, attachmentId);
+      final response = await _service.deleteAttachment(
+        projectId,
+        cardId,
+        attachmentId,
+      );
       final data = response.data['data'];
       return NetworkResult.success(data['success'] == true);
     } catch (error) {
@@ -86,7 +107,11 @@ class TaskDetailsRepo {
     }
   }
 
-  Future<NetworkResult<TaskCommentsResponse>> getCardComments(int projectId, int cardId) async {
+  //----------------------------------------------------------------------
+  Future<NetworkResult<TaskCommentsResponse>> getCardComments(
+    int projectId,
+    int cardId,
+  ) async {
     try {
       final response = await _service.getTaskComments(projectId, cardId);
       return NetworkResult.success(response);
@@ -95,16 +120,29 @@ class TaskDetailsRepo {
     }
   }
 
-  Future<NetworkResult<AddCommentResponse>> addComment(int projectId, int cardId, String content) async {
+  //----------------------------------------------------------------------
+
+  Future<NetworkResult<AddCommentResponse>> addComment(
+    int projectId,
+    int cardId,
+    String content,
+  ) async {
     try {
-      final response = await _service.addComment(projectId, cardId, {'content': content});
+      final response = await _service.addComment(projectId, cardId, {
+        'content': content,
+      });
       return NetworkResult.success(response);
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }
   }
 
-  Future<NetworkResult<bool>> deleteComment(int projectId, int cardId, int commentId) async {
+  //----------------------------------------------------------------------
+  Future<NetworkResult<bool>> deleteComment(
+    int projectId,
+    int cardId,
+    int commentId,
+  ) async {
     try {
       await _service.deleteComment(projectId, cardId, commentId);
       return const NetworkResult.success(true);
@@ -113,10 +151,32 @@ class TaskDetailsRepo {
     }
   }
 
-  Future<NetworkResult<TaskActivitiesResponse>> getCardActivities(int projectId, int cardId) async {
+  //----------------------------------------------------------------------
+  Future<NetworkResult<TaskActivitiesResponse>> getCardActivities(
+    int projectId,
+    int cardId,
+  ) async {
     try {
       final response = await _service.getTaskActivities(projectId, cardId);
       return NetworkResult.success(response);
+    } catch (error) {
+      return NetworkResult.failure(NetworkExceptions.getDioException(error));
+    }
+  }
+
+  //----------------------------------------------------------------------
+  Future<NetworkResult<String>> downloadBook({
+    required String url,
+    required String fileName,
+    required Function(int received, int total) onProgress,
+  }) async {
+    try {
+      final filePath = await _downloadService.downloadFile(
+        url: url,
+        fileName: fileName,
+        onProgress: onProgress,
+      );
+      return NetworkResult.success(filePath);
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }

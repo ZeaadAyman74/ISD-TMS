@@ -36,6 +36,25 @@ class DeleteAttachmentError extends ErrorState {
   const DeleteAttachmentError(super.error);
 }
 
+class StartDownload extends TaskDetailsState {}
+class DownloadInProgress extends TaskDetailsState {
+  final int attachmentId;
+  final double progress;
+
+  DownloadInProgress(this.attachmentId, this.progress);
+}
+class DownloadSuccess extends TaskDetailsState {
+  final int attachmentId;
+  final String path;
+
+  DownloadSuccess(this.attachmentId, this.path);
+}
+class DownloadFailure extends TaskDetailsState {
+  final String error;
+  final int attachmentId;
+
+  DownloadFailure(this.error, this.attachmentId);
+}
 
 class AddCommentLoading extends TaskDetailsState {}
 class AddCommentSuccess extends TaskDetailsState {}

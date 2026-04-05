@@ -113,7 +113,7 @@ abstract class NetworkExceptions with _$NetworkExceptions implements Exception {
       default:
         var responseCode = statusCode;
         return NetworkExceptions.defaultError(
-            ErrorModel(code: 0,details: "Received invalid status code: $responseCode"),
+            ErrorModel(message: "Received invalid status code: $responseCode"),
             generalModel.validation);
     }
   }
@@ -168,7 +168,7 @@ abstract class NetworkExceptions with _$NetworkExceptions implements Exception {
       }
     } else {
       if (error.toString().contains("is not a subtype of")) {
-        return NetworkExceptions.unableToProcess(ErrorModel(details: error.toString()), null);
+        return NetworkExceptions.unableToProcess(ErrorModel(message: error.toString()), null);
       } else {
         return const NetworkExceptions.unexpectedError(null);
       }
@@ -182,28 +182,28 @@ abstract class NetworkExceptions with _$NetworkExceptions implements Exception {
         errorMessage = "";
       },
       unauthenticatedRequest: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       requestCancelled: () {
         errorMessage = "";
       },
       internalServerError: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       notFound: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       serviceUnavailable: (ValidationModel? validation) {
         errorMessage = "";
       },
       methodNotAllowed: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       badRequest: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       unauthorizedRequest: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       unexpectedError: (ValidationModel? validation) {
         errorMessage = "Unexpected error";
@@ -218,16 +218,16 @@ abstract class NetworkExceptions with _$NetworkExceptions implements Exception {
         errorMessage = "No internet connection";
       },
       conflict: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       sendTimeout: (ValidationModel? validation) {
         errorMessage = "Connection timeout";
       },
       unableToProcess: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       defaultError: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       formatException: (ValidationModel? validation) {
         errorMessage = "Something went wrong";
@@ -236,7 +236,7 @@ abstract class NetworkExceptions with _$NetworkExceptions implements Exception {
         errorMessage = "Not acceptable";
       },
       allowedRequest: (ErrorModel errorModel, ValidationModel? validation) {
-        errorMessage = errorModel.details??'';
+        errorMessage = errorModel.message??'';
       },
       locationServiceException: () => errorMessage="'Please enable location service'",
       locationPermissionException: () => errorMessage='Please enable location permission',

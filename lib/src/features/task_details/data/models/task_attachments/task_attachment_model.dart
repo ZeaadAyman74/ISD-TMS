@@ -35,7 +35,7 @@ class TaskAttachmentModel {
   final String mimeType;
   final int size;
   final String createdAt;
-  final String previewUrl;
+  final String? previewUrl;
   final String downloadUrl;
   final BoardMember? user;
 

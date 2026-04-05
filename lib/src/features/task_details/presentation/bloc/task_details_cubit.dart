@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isd_tms/src/core/extensions/ui_extension.dart';
+import 'package:isd_tms/src/core/helpers/permissions_helper.dart';
 import 'package:isd_tms/src/core/network/result/network_result.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
@@ -124,6 +126,31 @@ class TaskDetailsCubit extends Cubit<TaskDetailsState> {
       },
       failure: (error) {
         emit(DeleteAttachmentError(NetworkExceptions.getErrorMessage(error)));
+      },
+    );
+  }
+
+  void startDownloadFile({required id,required String fileName, required String url}) async {
+    if (!(await PermissionsHelper.checkStoragePermission())) return;
+    emit(StartDownload());
+    final response = await _repo.downloadBook(
+      fileName: fileName,
+      onProgress: (received, total) {
+        final progress = total > 0 ? (received / total) : 0.0;
+        printMe(total);
+        printMe(progress);
+        emit(DownloadInProgress(id,progress));
+      },
+      url: url,
+    );
+    response.when(
+      success: (filePath) {
+        printMeLog("Download Success: $filePath");
+        emit(DownloadSuccess(id,filePath));
+      },
+      failure: (error) {
+        printMeLog("Download Error: $error");
+        emit(DownloadFailure(NetworkExceptions.getErrorMessage(error),id));
       },
     );
   }

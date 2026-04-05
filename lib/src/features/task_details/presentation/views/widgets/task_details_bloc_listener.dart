@@ -17,9 +17,20 @@ class TaskDetailsBlocListener extends StatelessWidget {
     return BlocListener<TaskDetailsCubit, TaskDetailsState>(
       listener: (context, state) {
         if (state is ErrorState) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.error)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        } else if (state is DownloadSuccess) {
+          printMe(state.attachmentId);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("File Downloaded Success"),
+              backgroundColor: AppColors.success,
+            ),
+          );
         }
       },
       child: BlocListener(
@@ -49,9 +60,9 @@ class TaskDetailsBlocListener extends StatelessWidget {
             Navigator.of(context).pop(); // pop details screen
           } else if (state is DeleteTaskError) {
             Navigator.of(context).pop(); // pop loader
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.error)));
           }
         },
         child: child,

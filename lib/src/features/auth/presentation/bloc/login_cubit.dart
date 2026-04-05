@@ -32,13 +32,14 @@ class LoginCubit extends Cubit<LoginState> {
 
     result.when(
       success: (response) async {
+
         if (response.accessToken != null && response.user != null) {
           await HiveUtils.setToken(response.accessToken!);
           await HiveUtils.setUser(response.user!);
           emit(const LoginSuccess());
         } else {
           emit(
-            const LoginError('Login failed. Please check your credentials.'),
+             LoginError(response.message?? 'Login failed. Please check your credentials.'),
           );
         }
       },

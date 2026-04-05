@@ -3,6 +3,8 @@ import 'package:isd_tms/src/features/auth/data/models/user_model.dart';
 
 class LoginResponse {
   const LoginResponse({
+    this.success=true,
+    this.message,
     this.tokenType,
     this.accessToken,
     this.expiresIn,
@@ -10,6 +12,8 @@ class LoginResponse {
     this.userId,
   });
 
+  final bool? success;
+  final String? message;
   final String? tokenType;
   final String? accessToken;
   final int? expiresIn;
@@ -31,6 +35,8 @@ class LoginResponse {
     }
 
     return LoginResponse(
+      success: data['success']??true,
+      message: data['message'],
       tokenType: data['token_type'],
       accessToken: data['access_token'],
       expiresIn: data['expires_in'],

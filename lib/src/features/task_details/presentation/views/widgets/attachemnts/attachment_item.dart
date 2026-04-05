@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
-import 'package:isd_tms/src/core/theme/app_colors.dart';
+import 'package:isd_tms/src/features/task_details/data/models/task_attachments/task_attachment_model.dart';
+import 'package:isd_tms/src/features/task_details/presentation/views/widgets/attachemnts/attachment_icon.dart';
+import 'package:isd_tms/src/features/task_details/presentation/views/widgets/attachemnts/delete_attachment_button.dart';
+import 'package:isd_tms/src/features/task_details/presentation/views/widgets/attachemnts/download_file_button.dart';
 
 class AttachmentItem extends StatelessWidget {
   const AttachmentItem({
     super.key,
     required this.attachment,
-    required this.onDelete,
-    this.canDelete=true,
+    this.canDelete = true,
   });
 
-  final dynamic attachment;
-  final VoidCallback onDelete;
+  final TaskAttachmentModel attachment;
   final bool canDelete;
 
   @override
   Widget build(BuildContext context) {
-    final isImage = attachment.mimeType.toLowerCase().startsWith('image/');
     return Container(
       margin: EdgeInsets.only(bottom: 8.h),
       padding: EdgeInsets.all(12.w),
@@ -27,29 +27,7 @@ class AttachmentItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          if (isImage &&
-              attachment.previewUrl != null &&
-              attachment.previewUrl.isNotEmpty)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4.r),
-              child: Image.network(
-                attachment.previewUrl!,
-                width: 40.w,
-                height: 40.w,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Icon(
-                  Icons.image,
-                  size: 32.sp,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            )
-          else
-            Icon(
-              Icons.insert_drive_file,
-              size: 32.sp,
-              color: AppColors.textSecondary,
-            ),
+          AttachmentIcon(attachment: attachment),
           SizedBox(width: 12.w),
           Expanded(
             child: Column(
@@ -68,21 +46,8 @@ class AttachmentItem extends StatelessWidget {
               ],
             ),
           ),
-          // IconButton(
-          //   onPressed: () {
-          //     // Download attachment
-          //   },
-          //   icon: const Icon(Icons.download_outlined, size: 18),
-          // ),
-          if(canDelete)
-          IconButton(
-            onPressed: onDelete,
-            icon: const Icon(
-              Icons.delete_outline,
-              size: 18,
-              color: AppColors.error,
-            ),
-          ),
+          DownloadFileButton(attachment: attachment),
+          if (canDelete) DeleteAttachmentButton(attachment: attachment),
         ],
       ),
     );

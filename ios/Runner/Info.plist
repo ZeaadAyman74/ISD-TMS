@@ -51,5 +51,11 @@
 	<string>This application needs camera access to allow you to take photos and attach them directly to your tasks.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This application needs microphone access when capturing video to attach to your tasks.</string>
+	<key>NSFileUsageDescription</key>
+    <string>My app needs files access to upload files from the device to the app </string>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
+    <key>UIFileSharingEnabled</key>
+    <true/>
 </dict>
 </plist>

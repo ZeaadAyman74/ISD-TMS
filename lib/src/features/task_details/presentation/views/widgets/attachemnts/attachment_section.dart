@@ -82,8 +82,6 @@ class AttachmentSection extends StatelessWidget {
                   child: AttachmentItem(
                     attachment: a,
                     canDelete: boardCubit.permissions?.cardAttachments?.delete??false,
-                    onDelete: () =>
-                        context.read<TaskDetailsCubit>().deleteAttachment(a.id),
                   ),
                 ),
               ),

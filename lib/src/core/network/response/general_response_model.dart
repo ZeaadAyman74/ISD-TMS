@@ -20,45 +20,22 @@ class GeneralResponseModel {
     return GeneralResponseModel(
       message: data['message'] ?? json['message'] ?? "",
       success: data['success'] ?? json['success'] ?? true,
-      errorModel: json['error'] != null 
-          ? ErrorModel.fromJson(json['error']) 
-          : (data['success'] == false ? ErrorModel.fromData(data) : null),
+      errorModel:  ErrorModel.fromJson(json),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'success': success,
-      'message': message,
-      'error': errorModel?.toJson(),
-      'validation': validation?.toJson()
-    };
   }
 }
 
 class ErrorModel {
-  final int? code;
+  final String? message;
   final int? statusCode;
-  final String? title;
-  final String? details;
 
-  ErrorModel({this.code, this.statusCode, this.title, this.details});
+
+  ErrorModel({this.message, this.statusCode});
 
   factory ErrorModel.fromJson(Map<String, dynamic> json) {
     return ErrorModel(
-        code: json['code'],
-        title: json['title'],
-        statusCode: json['status'],
-        details: json['details'] ?? json['error'] ?? json['error_code']);
-  }
-
-  factory ErrorModel.fromData(Map<String, dynamic> data) {
-    return ErrorModel(
-      title: 'Error',
-      details: data['message'],
+      message: json['data']['message']??json['message'],
+        statusCode: json['data']['status']??json['status'],
     );
   }
-
-  Map<String, dynamic> toJson() =>
-      {'code': code, 'title': title, 'details': details};
 }

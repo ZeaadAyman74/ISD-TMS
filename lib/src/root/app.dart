@@ -32,7 +32,7 @@ class IsdTmsApp extends StatelessWidget {
             locale: userChosenLocale,
             navigatorKey: AppRouter.navigatorKey,
             onGenerateRoute: AppRouter.onGenerateRoute,
-            initialRoute: '/',
+            initialRoute: Routes.splash,
           );
         },
       ),

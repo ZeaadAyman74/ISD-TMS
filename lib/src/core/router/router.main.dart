@@ -33,7 +33,7 @@ class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     final arguments = settings.arguments;
     switch (settings.name) {
-      case Routes.initial:
+      case Routes.splash:
         return _buildRoute(const SplashScreen(), settings);
       //--------------------------------------------------------------------
       case Routes.login:
