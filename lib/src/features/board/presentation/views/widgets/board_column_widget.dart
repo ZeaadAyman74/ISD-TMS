@@ -102,16 +102,94 @@ class BoardColumnWidget extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-              itemCount: cardsForList.length,
+              itemCount: cardsForList.length + 1,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(bottom: 8.h),
-                  child: TaskCardWidget(
-                    card: cardsForList[index],
-                    canDelete:
-                        cubit.permissions?.cards?.delete ??
-                        false,
-                  ),
+                if (index == cardsForList.length) {
+                  // Drop target at the end of the list
+                  return DragTarget<CardModel>(
+                    onAcceptWithDetails: (details) {
+                      final card = details.data;
+                      cubit.moveCard(
+                        cardId: card.id,
+                        targetListId: boardList.id,
+                        targetPosition: index,
+                      );
+                    },
+                    builder: (context, candidateData, rejectedData) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        height: candidateData.isNotEmpty ? 100.h : 50.h,
+                        margin: EdgeInsets.only(bottom: 8.h),
+                        decoration: BoxDecoration(
+                          color: candidateData.isNotEmpty
+                              ? _columnColor.withValues(alpha: 0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: candidateData.isNotEmpty
+                            ? Center(
+                                child: Icon(Icons.add, color: _columnColor),
+                              )
+                            : null,
+                      );
+                    },
+                  );
+                }
+
+                final card = cardsForList[index];
+                return DragTarget<CardModel>(
+                  onWillAcceptWithDetails: (details) => details.data.id != card.id,
+                  onAcceptWithDetails: (details) {
+                    cubit.moveCard(
+                      cardId: details.data.id,
+                      targetListId: boardList.id,
+                      targetPosition: index,
+                    );
+                  },
+                  builder: (context, candidateData, rejectedData) {
+                    return Column(
+                      children: [
+                        if (candidateData.isNotEmpty)
+                          Container(
+                            height: 4.h,
+                            margin: EdgeInsets.only(bottom: 8.h),
+                            decoration: BoxDecoration(
+                              color: _columnColor,
+                              borderRadius: BorderRadius.circular(2.r),
+                            ),
+                          ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 8.h),
+                          child: LongPressDraggable<CardModel>(
+                            data: card,
+                            feedback: Material(
+                              color: Colors.transparent,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: MediaQuery.sizeOf(context).width - 48.w,
+                                ),
+                                child: TaskCardWidget(
+                                  card: card,
+                                  canDelete: false,
+                                ),
+                              ),
+                            ),
+                            childWhenDragging: Opacity(
+                              opacity: 0.3,
+                              child: TaskCardWidget(
+                                card: card,
+                                canDelete: false,
+                              ),
+                            ),
+                            child: TaskCardWidget(
+                              card: card,
+                              canDelete: cubit.permissions?.cards?.delete ?? false,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
             ),

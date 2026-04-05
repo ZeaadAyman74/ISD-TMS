@@ -19,9 +19,9 @@ class TaskCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit=context.read<BoardCubit>();
     return GestureDetector(
       onTap: () {
+        final cubit=context.read<BoardCubit>();
         Navigator.pushNamed(
           context,
           Routes.taskDetail,

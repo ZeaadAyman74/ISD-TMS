@@ -122,6 +122,38 @@ class CardModel {
       createdAt: json['created_at'],
     );
   }
+
+  CardModel copyWith({
+    int? id,
+    int? projectId,
+    int? listId,
+    String? title,
+    String? description,
+    String? type,
+    String? priority,
+    String? dueDate,
+    int? position,
+    int? commentsCount,
+    List<CardAssignee>? assignees,
+    List<LabelModel>? labels,
+    String? createdAt,
+  }) {
+    return CardModel(
+      id: id ?? this.id,
+      projectId: projectId ?? this.projectId,
+      listId: listId ?? this.listId,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      type: type ?? this.type,
+      priority: priority ?? this.priority,
+      dueDate: dueDate ?? this.dueDate,
+      position: position ?? this.position,
+      commentsCount: commentsCount ?? this.commentsCount,
+      assignees: assignees ?? this.assignees,
+      labels: labels ?? this.labels,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }
 
 class CardAssignee {

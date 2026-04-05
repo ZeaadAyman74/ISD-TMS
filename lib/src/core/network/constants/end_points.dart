@@ -20,6 +20,7 @@ class EndPoints {
   static const cardComments = '/api/my/projects/{projectId}/cards/{cardId}/comments';
   static const deleteComment = '/api/my/projects/{projectId}/cards/{cardId}/comments/{commentId}';
   static const cardActivities = '/api/my/projects/{projectId}/cards/{cardId}/activities';
+  static const reorderCards='/api/my/projects/{projectId}/lists/{listId}/cards/reorder';
 
   // Lookups
   static const cardTypes = '/api/lookups/card-types';

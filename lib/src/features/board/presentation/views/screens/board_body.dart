@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isd_tms/src/core/extensions/context_extensions.dart';
 import 'package:isd_tms/src/core/widgets/app_loading.dart';
 import 'package:isd_tms/src/core/widgets/error_state_widget.dart';
+import 'package:isd_tms/src/features/board/data/models/board_models.dart';
 import 'package:isd_tms/src/features/board/presentation/bloc/board_cubit.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/board_bloc_listener.dart';
 import 'package:isd_tms/src/features/board/presentation/views/widgets/board_column_widget.dart';
@@ -76,7 +77,33 @@ class _BoardBodyState extends State<BoardBody> with SingleTickerProviderStateMix
                   labelColor: context.appColors.primary,
                   unselectedLabelColor: context.appColors.textSecondary,
                   labelStyle: context.appTextTheme.font14TextPrimarySemiBold,
-                  tabs: state.lists.map((list) => Tab(text: list.title)).toList(),
+                  tabs: state.lists.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final list = entry.value;
+                    return DragTarget<CardModel>(
+                      onWillAcceptWithDetails: (details) {
+                        if (_tabController?.index != index) {
+                          _tabController?.animateTo(index);
+                        }
+                        return true;
+                      },
+                      onAcceptWithDetails: (details) {
+                        final card = details.data;
+                        if (card.listId != list.id) {
+                          final cubit = context.read<BoardCubit>();
+                          final targetCards = cubit.getCardsForList(list.id);
+                          cubit.moveCard(
+                            cardId: card.id,
+                            targetListId: list.id,
+                            targetPosition: targetCards.length,
+                          );
+                        }
+                      },
+                      builder: (context, candidateData, rejectedData) {
+                        return Tab(text: list.title);
+                      },
+                    );
+                  }).toList(),
                 ),
                 Expanded(
                   child: TabBarView(

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/board/data/models/reorder_cards_request_model.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_model.dart';
 import 'package:isd_tms/src/features/projects/data/models/project_permissions_model.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_details_models.dart';
@@ -172,6 +173,7 @@ class BoardCubit extends Cubit<BoardState> {
       },
     );
   }
+  //----------------------------------------------------------------------------
 
   Future<void> updateTask({
     required int cardId,
@@ -228,6 +230,7 @@ class BoardCubit extends Cubit<BoardState> {
       },
     );
   }
+  //----------------------------------------------------------------------------
 
   Future<void> deleteTask(int cardId) async {
     if (currentProject == null) return;
@@ -250,5 +253,97 @@ class BoardCubit extends Cubit<BoardState> {
       },
     );
   }
+  //----------------------------------------------------------------------------
+
+  Future<void> moveCard({
+    required int cardId,
+    required int targetListId,
+    required int targetPosition,
+  }) async {
+    final cardIndex = cards.indexWhere((c) => c.id == cardId);
+    if (cardIndex == -1) return;
+
+    final card = cards[cardIndex];
+    final oldListId = card.listId;
+    final oldPosition = card.position;
+
+    if(targetPosition>oldPosition && oldListId==targetListId){
+      targetPosition--;
+    }
+
+    if (oldListId == targetListId && oldPosition == targetPosition) return;
+
+    // Optimistic update
+    final updatedCards = cards.map((c) {
+      if (c.id == cardId) {
+        return c.copyWith(listId: targetListId, position: targetPosition);
+      }
+
+      if (oldListId == targetListId && c.listId == oldListId) {
+        // Same list reorder
+        if (oldPosition < targetPosition) {
+          if (c.position > oldPosition && c.position <= targetPosition) {
+            return c.copyWith(position: c.position - 1);
+          }
+        } else {
+          if (c.position >= targetPosition && c.position < oldPosition) {
+            return c.copyWith(position: c.position + 1);
+          }
+        }
+      } else {
+        // Cross list move
+        if (c.listId == oldListId && c.position > oldPosition) {
+          return c.copyWith(position: c.position - 1);
+        }
+        if (c.listId == targetListId && c.position >= targetPosition) {
+          return c.copyWith(position: c.position + 1);
+        }
+      }
+      return c;
+    }).toList();
+
+    cards = updatedCards;
+    emit(BoardLoaded(lists: lists, cards: cards));
+
+    // Call API using reorderCards
+    if (oldListId == targetListId) {
+      // Same column: call once
+      final listCardIds = getCardsForList(targetListId).map((c) => c.id).toList();
+      await reorderCards(targetListId, listCardIds);
+    } else {
+      // Different column: call twice
+      final oldListCardIds = getCardsForList(oldListId).map((c) => c.id).toList();
+      final newListCardIds = getCardsForList(targetListId).map((c) => c.id).toList();
+      
+      await reorderCards(targetListId, newListCardIds);
+      await reorderCards(oldListId, oldListCardIds);
+    }
+  }
+
+  //----------------------------------------------------------------------------
+
+  Future<void> reorderCards(int targetListId, List<int> cardIds) async {
+    emit(const ReorderCardLoading());
+    final result = await _repo.reorderCards(
+      projectId: currentProject!.id,
+      listId: targetListId,
+      data: ReorderCardsRequestModel(cardsIds: cardIds),
+    );
+
+    result.when(
+      success: (_) {
+        emit(const ReorderCardSuccess());
+        // Since we did optimistic update in moveCard, we only emit BoardLoaded here
+        emit(BoardLoaded(lists: lists, cards: cards));
+      },
+      failure: (error) {
+        emit(ReorderCardError(NetworkExceptions.getErrorMessage(error)));
+        getBoard(); // Rollback on failure
+      },
+    );
+  }
+
+//----------------------------------------------------------------------------
+
 }
 

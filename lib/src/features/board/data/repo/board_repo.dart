@@ -1,11 +1,14 @@
+import 'package:isd_tms/src/core/network/response/general_response_model.dart';
 import 'package:isd_tms/src/core/network/result/error/network_exceptions.dart';
 import 'package:isd_tms/src/core/network/result/network_result.dart';
 import 'package:isd_tms/src/features/board/data/models/board_models.dart';
+import 'package:isd_tms/src/features/board/data/models/reorder_cards_request_model.dart';
 import 'package:isd_tms/src/features/task_details/data/models/task_details_models.dart';
 import 'package:isd_tms/src/features/board/data/service/board_service.dart';
 
 class BoardRepo {
   const BoardRepo(this._service);
+
   final BoardService _service;
 
   Future<NetworkResult<BoardResponse>> getProjectBoard(int projectId) async {
@@ -24,14 +27,11 @@ class BoardRepo {
     required int position,
   }) async {
     try {
-      final response = await _service.createCard(
-        projectId,
-        {
-          'title': title,
-          'list_id': listId,
-          'position': position,
-        },
-      );
+      final response = await _service.createCard(projectId, {
+        'title': title,
+        'list_id': listId,
+        'position': position,
+      });
       final data = response.data['data'];
       return NetworkResult.success(CardModel.fromJson(data['data'] ?? data));
     } catch (error) {
@@ -45,14 +45,11 @@ class BoardRepo {
     required Map<String, dynamic> data,
   }) async {
     try {
-      final response = await _service.updateCard(
-        projectId,
-        cardId,
-        data,
-      );
+      final response = await _service.updateCard(projectId, cardId, data);
       final responseData = response.data['data'];
       return NetworkResult.success(
-          CardModel.fromJson(responseData['data'] ?? responseData));
+        CardModel.fromJson(responseData['data'] ?? responseData),
+      );
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }
@@ -63,13 +60,27 @@ class BoardRepo {
     required int cardId,
   }) async {
     try {
-      await _service.deleteCard(
-        projectId,
-        cardId,
-      );
+      await _service.deleteCard(projectId, cardId);
       return const NetworkResult.success(null);
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
+    }
+  }
+
+  Future<NetworkResult<GeneralResponseModel>> reorderCards({
+    required int projectId,
+    required int listId,
+    required ReorderCardsRequestModel data,
+  }) async {
+    try {
+      final response = await _service.reorderCards(
+        projectId: projectId,
+        listId: listId,
+        data: data,
+      );
+      return NetworkResult.success(response);
+    } catch (e) {
+      return NetworkResult.failure(NetworkExceptions.getDioException(e));
     }
   }
 
@@ -77,7 +88,9 @@ class BoardRepo {
     try {
       final response = await _service.getCardTypes();
       final List data = response.data['data'];
-      return NetworkResult.success(data.map((e) => LookupModel.fromJson(e)).toList());
+      return NetworkResult.success(
+        data.map((e) => LookupModel.fromJson(e)).toList(),
+      );
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }
@@ -87,7 +100,9 @@ class BoardRepo {
     try {
       final response = await _service.getCardPriorities();
       final List data = response.data['data'];
-      return NetworkResult.success(data.map((e) => LookupModel.fromJson(e)).toList());
+      return NetworkResult.success(
+        data.map((e) => LookupModel.fromJson(e)).toList(),
+      );
     } catch (error) {
       return NetworkResult.failure(NetworkExceptions.getDioException(error));
     }

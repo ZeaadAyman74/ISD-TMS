@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:isd_tms/src/core/network/response/general_response_model.dart';
+import 'package:isd_tms/src/features/board/data/models/reorder_cards_request_model.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:isd_tms/src/core/network/constants/end_points.dart';
 
@@ -29,6 +31,13 @@ abstract class BoardService {
     @Path("projectId") int projectId,
     @Path("cardId") int cardId,
   );
+  
+  @POST(EndPoints.reorderCards)
+  Future<GeneralResponseModel>reorderCards({
+    @Path('projectId') required int projectId,
+    @Path('listId') required int listId,
+    @Body() required ReorderCardsRequestModel data
+});
 
   @GET(EndPoints.cardTypes)
   Future<HttpResponse<dynamic>> getCardTypes();
